@@ -1,4 +1,18 @@
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.28
+ * Version: 0.0.1
+ * Description: 地图缩放实例对象
+ */
 export default class MapZoom {
+    
+    /**
+     * 构造函数
+     * @param {*} map 地图对象
+     * @param {*} mapDom 缩放对象
+     * @param {*} opts 缩放级别
+     */
     constructor(map, mapDom, opts) {
         this._map = map;
         this._mapDom = mapDom;
@@ -10,6 +24,9 @@ export default class MapZoom {
         this._createDom();
     }
 
+    /**
+     * 创建地图缩放对象Dom
+     */
     _createDom() {
         let div = document.createElement('div');
         div.classList.add('inmap-scale-group');
@@ -18,6 +35,10 @@ export default class MapZoom {
         this._event(div);
         this.setButtonState();
     }
+
+    /**
+     * 设置按钮状态
+     */
     setButtonState() {
         let doms = this._mapDom.querySelectorAll('.inmap-scale-group a');
         let zoom = this._map.getZoom();
@@ -34,6 +55,11 @@ export default class MapZoom {
         }
 
     }
+
+    /**
+     * 绑定事件
+     * @param {object} div 
+     */
     _event(div) {
         let doms = div.querySelectorAll('a');
         doms[0].addEventListener('click', () => {

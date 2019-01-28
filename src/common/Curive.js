@@ -64,18 +64,34 @@ function smoothSpline(points, isLoop) {
     return ret;
 }
 
+/**
+ * 插值计算
+ * @param {*} p0 
+ * @param {*} p1 
+ * @param {*} p2 
+ * @param {*} p3 
+ * @param {*} t 
+ * @param {*} t2 
+ * @param {*} t3 
+ */
 function interpolate(p0, p1, p2, p3, t, t2, t3) {
     let v0 = (p2 - p0) * 0.5;
     let v1 = (p3 - p1) * 0.5;
     return (2 * (p1 - p2) + v0 + v1) * t3 + (-3 * (p1 - p2) - 2 * v0 - v1) * t2 + v0 * t + p1;
 }
 
+/**
+ * 获取两个点距离
+ * @param {array} p1 
+ * @param {array} p2 
+ */
 function getDistance(p1, p2) {
     return Math.sqrt(
         (p1[0] - p2[0]) * (p1[0] - p2[0]) +
         (p1[1] - p2[1]) * (p1[1] - p2[1])
     );
 }
+
 export function lineCurive(fromPoint, endPoint, n) {
     let delLng = (endPoint[0] - fromPoint[0]) / n;
     let delLat = (endPoint[1] - fromPoint[1]) / n;

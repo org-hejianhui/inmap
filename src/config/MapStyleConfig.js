@@ -1,3 +1,12 @@
+ /**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.28
+ * Version: 0.0.1
+ * Description: 地图风格样式
+ */
+
+ // 白色风格
  export const WhiteLover = [{
      'featureType': 'water',
      'elementType': 'all',
@@ -155,6 +164,7 @@
      }
  }
  ];
+ // 蓝色风格
  export const Blueness = [{
      'featureType': 'water',
      'elementType': 'all',

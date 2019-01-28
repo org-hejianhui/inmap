@@ -1,7 +1,12 @@
 /**
- * Daniel zhen.wang
- * wangzhen422@gmal.com
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.28
+ * Version: 0.0.1
+ * Description: 颜色工具类
  */
+
+ // 颜色关键字
 let ColorKeywords = {
     'aliceblue': 0xF0F8FF,
     'antiquewhite': 0xFAEBD7,
@@ -165,6 +170,9 @@ function Colors(r, g, b) {
 
 }
 
+/**
+ * Colors对象
+ */
 Colors.prototype = {
 
     constructor: Colors,
@@ -175,6 +183,10 @@ Colors.prototype = {
     g: 1,
     b: 1,
 
+    /**
+     * 设置并获取Colors对象
+     * @param {*} value 
+     */
     set: function (value) {
 
         if ((value && value.isColor)) {
@@ -195,6 +207,10 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 根据数值设置rgb
+     * @param {*} scalar 
+     */
     setScalar: function (scalar) {
 
         this.r = scalar;
@@ -203,6 +219,10 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 随机设置rgb
+     * @param {number|*} hex
+     */
     setHex: function (hex) {
 
         hex = Math.floor(hex);
@@ -215,6 +235,12 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 指定设置rgb
+     * @param {*} r 
+     * @param {*} g 
+     * @param {*} b 
+     */
     setRGB: function (r, g, b) {
 
         this.r = r;
@@ -225,6 +251,9 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 设置色彩模式
+     */
     setHSL: function () {
         /*eslint-disable */
         function hue2rgb(p, q, t) {
@@ -241,6 +270,11 @@ Colors.prototype = {
 
     }(),
     /*eslint-disable */
+
+    /**
+     * 设置颜色风格
+     * @param {*} style 
+     */
     setStyle: function (style) {
 
         function handleAlpha(string) {
@@ -360,11 +394,18 @@ Colors.prototype = {
 
     },
     /*eslint-enable */
+    /**
+     * 克隆一个对象
+     */
     clone: function () {
         return new this.constructor(this.r, this.g, this.b);
 
     },
 
+    /**
+     * 复制一个对象
+     * @param {*} color 
+     */
     copy: function (color) {
 
         this.r = color.r;
@@ -374,6 +415,11 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 复制获取一个新的Color对象，copyGammaToLinear
+     * @param {*} color 
+     * @param {*} gammaFactor 
+     */
     copyGammaToLinear: function (color, gammaFactor) {
 
         if (gammaFactor === undefined) gammaFactor = 2.0;
@@ -386,6 +432,11 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 复制获取一个新的Color对象，copyLinearToGamma
+     * @param {*} color 
+     * @param {*} gammaFactor 
+     */
     copyLinearToGamma: function (color, gammaFactor) {
 
         if (gammaFactor === undefined) gammaFactor = 2.0;
@@ -400,6 +451,9 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 获取一个新的Color对象，convertGammaToLinear
+     */
     convertGammaToLinear: function () {
 
         let r = this.r,
@@ -414,6 +468,9 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 获取一个新的Color对象，convertLinearToGamma
+     */
     convertLinearToGamma: function () {
 
         this.r = Math.sqrt(this.r);
@@ -424,18 +481,28 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 获取十六进制
+     */
     getHex: function () {
 
         return (this.r * 255) << 16 ^ (this.g * 255) << 8 ^ (this.b * 255) << 0;
 
     },
 
+    /**
+     * 获取十六进制值字符串
+     */
     getHexString: function () {
 
         return ('000000' + this.getHex().toString(16)).slice(-6);
 
     },
 
+    /**
+     * 获取色相值
+     * @param {*} optionalTarget 目标对象
+     */
     getHSL: function (optionalTarget) {
 
         // h,s,l ranges are in 0.0 - 1.0
@@ -493,14 +560,28 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 获取rgb值
+     */
     getValue: function () {
         return 'rgb(' + ((this.r * 255) | 0) + ',' + ((this.g * 255) | 0) + ',' + ((this.b * 255) | 0) + ')';
 
     },
+
+    /**
+     * 获取rgba值
+     * @param {*} opacity 
+     */
     getRgbaValue(opacity) {
         return 'rgba(' + ((this.r * 255) | 0) + ',' + ((this.g * 255) | 0) + ',' + ((this.b * 255) | 0) + ',' + (opacity || 1) + ')';
     },
 
+    /**
+     * 获取Color对象，根据偏移设置色相值
+     * @param {*} h 色相
+     * @param {*} s 饱和度
+     * @param {*} l 明度
+     */
     offsetHSL: function (h, s, l) {
 
         let hsl = this.getHSL();
@@ -515,6 +596,10 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 获取Color对象，当前对象值 + 参数对象值
+     * @param {*} color 
+     */
     add: function (color) {
 
         this.r += color.r;
@@ -525,6 +610,11 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 获取Color对象，两个Color对象相加
+     * @param {*} color1 
+     * @param {*} color2 
+     */
     addColors: function (color1, color2) {
 
         this.r = color1.r + color2.r;
@@ -535,6 +625,10 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 获取Color对象，当前对象 + 数量
+     * @param {*} s 数量
+     */
     addScalar: function (s) {
 
         this.r += s;
@@ -545,6 +639,10 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 获取Color对象，当前对象 - 参数对象
+     * @param {*} color 
+     */
     sub: function (color) {
 
         this.r = Math.max(0, this.r - color.r);
@@ -555,6 +653,10 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 获取Color对象，当前对象 * 参数对象
+     * @param {*} color Color 对象
+     */
     multiply: function (color) {
 
         this.r *= color.r;
@@ -565,6 +667,10 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 获取Color对象，rgb * 数量
+     * @param {number|*} s 数量
+     */
     multiplyScalar: function (s) {
 
         this.r *= s;
@@ -575,6 +681,11 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 获取Color对象，（参数对象 - 当前对象）* 系数
+     * @param {Color|*} color Color 对象
+     * @param {number|*} alpha 系数
+     */
     lerp: function (color, alpha) {
 
         this.r += (color.r - this.r) * alpha;
@@ -585,12 +696,21 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 判断Color是否相等
+     * @param {Color|*} c Color对象
+     */
     equals: function (c) {
 
         return (c.r === this.r) && (c.g === this.g) && (c.b === this.b);
 
     },
 
+    /**
+     * 从数组中获取Color对象
+     * @param {array|*} array 数组对象
+     * @param {number|*} offset 偏移量
+     */
     fromArray: function (array, offset) {
 
         if (offset === undefined) offset = 0;
@@ -603,6 +723,11 @@ Colors.prototype = {
 
     },
 
+    /**
+     * 转换成数组
+     * @param {array|*} array 数组对象
+     * @param {number|*} offset 偏移量
+     */
     toArray: function (array, offset) {
 
         if (array === undefined) array = [];

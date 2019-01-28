@@ -1,4 +1,11 @@
- let instances = {};
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.28
+ * Version: 0.0.1
+ * Description: 多线程工具类
+ */
+let instances = {};
  class WorkerMrg {
      constructor() {
          this.worker = null;
@@ -18,7 +25,7 @@
          this.worker = new Worker(workerUrl);
          this.worker.addEventListener('message', this.message);
          this.worker.onerror = function (e) {
-             throw new TypeError('inMap : worker.onerror',e);
+             throw new TypeError('zcMap : worker.onerror',e);
 
          };
      }

@@ -1,8 +1,11 @@
 import {isString} from './Util';
 
-
 /**
- * @fileoverview 关于地理点坐标类文件.
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.28
+ * Version: 0.0.1
+ * Description: 关于地理点坐标类文件.
  */
 
 //Include("BMap.baidu.lang.Class");
@@ -16,7 +19,7 @@ import {isString} from './Util';
  * @return {Point} 返回一个地理点坐标对象.
  */
 function Point(lng, lat) {
-    // 新增base64支持 - by jz
+    // 新增base64支持
     if (isNaN(lng)) {
         
         lng = isNaN(lng) ? 0 : lng;
@@ -34,10 +37,19 @@ function Point(lng, lat) {
     this.lng = lng;
     this.lat = lat;
 }
+
+/**
+ * 点坐标是否在范围
+ */
 Point.isInRange = function (pt) {
     return pt && pt.lng <= 180 && pt.lng >= -180 && pt.lat <= 74 && pt.lat >= -74;
 };
+
+/**
+ * 点坐标是否相等
+ */
 Point.prototype.equals = function (other) {
     return other && this.lat == other.lat && this.lng == other.lng;
 };
+
 export default Point;

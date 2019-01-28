@@ -19,9 +19,15 @@ export function typeOf(obj) {
 export function isNumber(num) {
     return typeOf(num) == 'number';
 }
+
+/**
+ * 是否为boolean类型
+ * @param {object} obj 
+ */
 export function isBoolean(obj) {
     return typeOf(obj) == 'boolean';
 }
+
 /**
  * 是否是函数
  * @param {Mix}
@@ -56,6 +62,11 @@ export function isObject(object) {
 export function isArray(source) {
     return typeOf(source) == 'array';
 }
+
+/**
+ * 是否为空
+ * @param {object} val 
+ */
 export const isEmpty = val => val == null || !(Object.keys(val) || val).length;
 
 export const isPromiseLike = obj =>
@@ -164,7 +175,11 @@ export function detectmob() {
 }
 
 
-
+/**
+ * 检查数组长度
+ * @param {array} arr 数组
+ * @param {number} size 长度
+ */
 export const chunk = (arr, size) =>
     Array.from({
             length: Math.ceil(arr.length / size)
@@ -173,6 +188,9 @@ export const chunk = (arr, size) =>
     );
 
 
+/**
+ * 数组合并
+ */
 export function merge() {
     let arr = Array.prototype.slice.call(arguments);
     return deepmerge.all(arr, {
@@ -181,6 +199,7 @@ export function merge() {
         }
     });
 }
+
 export function clearPushArray(a, b) {
     if (Array.isArray(b)) {
         a.splice(0, a.length);
@@ -231,13 +250,13 @@ export function checkType(row, isCheckName, isCheckCount) {
 export function checkGeoJSON(data, isCheckName, isCheckCount) {
     if (!data) return;
     if (!isArray(data)) {
-        throw new TypeError('inMap: data must be is Array<GEOJSON>');
+        throw new TypeError('zcMap: data must be is Array<GEOJSON>');
     }
 
     for (let i = 0, len = data.length; i < len; i++) {
         let ms = checkType(data[i], isCheckName, isCheckCount);
         if (ms) {
-            throw new TypeError(`inMap: data index Line ${i}, ${ms} about geoJSON, visit http://inmap.talkingdata.com/#/docs/v2/Geojson`);
+            throw new TypeError(`zcMap: data index Line ${i}, ${ms} about geoJSON`);
         }
 
     }

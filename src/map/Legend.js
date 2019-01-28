@@ -1,46 +1,96 @@
-import Color from '../common/Color';
-import config from '../config/LegendConfig';
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.28
+ * Version: 0.0.1
+ * Description: 地图图例实例对象
+ */
+import Color from '../common/Color';    // 颜色工具类
+import config from '../config/LegendConfig';    // 图例配置类
 import {
-    isArray,
-    isString,
-    isEmpty,
-    isBoolean,
-    merge
+    isArray,    // 判断目标参数是否Array对象
+    isString,   // 是否是字符串
+    isEmpty,    // 是否为空
+    isBoolean,  // 是否为boolean类型
+    merge   // 数组合并
 } from '../common/Util';
 export default class Legend {
+
+    /**
+     * Legend 构造函数
+     * @param {Object} toolDom 图例dom
+     * @param {Object} opts 配置项
+     */
     constructor(toolDom, opts) {
         this._opts = opts || config;
         this._dom = this._crateDom(toolDom);
         this.hide();
     }
+    
+    /**
+     * 创建图例dom
+     * @param {Object} toolDom 
+     */
     _crateDom(toolDom) {
         let div = document.createElement('div');
         div.classList.add('inmap-legend');
         toolDom.appendChild(div);
         return div;
     }
+
+    /**
+     * 图例显示
+     */
     show() {
         this._dom.style.display = 'inline-block';
     }
+
+    /**
+     * 图例隐藏
+     */
     hide() {
         this._dom.style.display = 'none';
     }
+
+    /**
+     * 小数格式化
+     * @param {*} num 小数
+     */
     _toFixed(num) {
         return isNaN(num) ? num : parseFloat(num).toFixed(this._opts.toFixed);
     }
+
+    /**
+     * 设置标题
+     * @param {String} title 
+     */
     setTitle(title) {
         this._opts.title = title;
         this._render();
     }
+
+    /**
+     * 设置配置项
+     * @param {Object} opts 
+     */
     setOption(opts) {
         this._opts = merge(config, this._opts, opts);
         this._opts.list = this._opts.list || [];
         this._render();
     }
+
+    /**
+     * 设置数据项
+     * @param {Array} list 
+     */
     setItems(list) {
         this._opts.list = list;
         this._render();
     }
+
+    /**
+     * 数据验证
+     */
     _verify() {
         let {
             show,
@@ -48,17 +98,21 @@ export default class Legend {
             list,
         } = this._opts;
         if (!isBoolean(show)) {
-            throw new TypeError('inMap: legend options show must be a Boolean');
+            throw new TypeError('zcMap: legend options show must be a Boolean');
         }
         if (!isEmpty(title) && !isString(title)) {
-            throw new TypeError('inMap: legend options title must be a String');
+            throw new TypeError('zcMap: legend options title must be a String');
         }
         if (!isArray(list)) {
-            throw new TypeError('inMap: legend options list must be a Array');
+            throw new TypeError('zcMap: legend options list must be a Array');
         }
 
 
     }
+
+    /**
+     * 图例渲染
+     */
     _render() {
         this._verify();
         let {
@@ -130,6 +184,10 @@ export default class Legend {
         this._dom.innerHTML = str;
 
     }
+
+    /**
+     * 释放对象
+     */
     dispose() {
         this._dom.parentNode.removeChild(this._dom);
         this._opts = null;

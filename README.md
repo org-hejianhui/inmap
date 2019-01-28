@@ -93,3 +93,39 @@ npm run dev
 [Apache License 2.0](https://github.com/TalkingData/inmap/blob/master/LICENSE)
 
 Copyright (c) 2015-present, TalkingData
+
+inMap
+    |---assets  静态文件
+    |---dist    打包文件
+    |---examples    示例
+    |---node_modules    依赖包
+    |---src 工程资源
+        |---common  公用类和一些其他的公共api/变量
+            |---Color.js 颜色工具类
+        |---config  默认的公用配置
+        |---lib 第三方工具
+        |---map 地图对象以及地图工具对象
+            |---style   样式
+            |---index   地图实例对象
+            |---Legend  地图图例实例对象
+            |---mapZoom 地图缩放实例对象
+            |---Toolbar 地图工具实例对象
+            |---ToolTip 地图提示实例对象
+        |---overlay 地图各个实例对象
+            |--- base 基础类
+            |--- PolygonEditorOverlay 围栏编辑
+            |--- GriddingOverlay 网格聚合
+            |--- HeatOverlay 热力图
+            |--- HoneycombOverlay 蜂窝聚合
+            |--- ImgOverlay 矢量图
+            |--- LabelOverlay 文字
+            |--- LineStringAnimationOverlay 线路动画
+            |--- LineStringOverlay 线路
+            |--- MaskOverlay 围栏遮罩
+            |--- MoveLineOverlay 飞线图 
+            |--- PointAnimationOverlay 圆点动画
+            |--- PointOverlay 散点
+            |--- PolygonOverlay 围栏
+        |---worker  大量for循环的方法-使用多线程处理
+        |---main.js 主入口文件
+        |---test    测试/单元测试
