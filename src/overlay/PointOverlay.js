@@ -30,6 +30,10 @@ export default class PointOverlay extends Parameter {
         this._state = null;
         this._mpp = {};
     }
+
+    /**
+     * 初始化图例
+     */
     _initLegend() {
         if (this._styleConfig.splitList.length === 0 && this._styleConfig.colors.length > 0) {
             this._compileSplitList(this._getTransformData());
@@ -38,22 +42,44 @@ export default class PointOverlay extends Parameter {
         }
 
     }
+
+    /**
+     * 设置图层索引
+     * @param {Nubmer} zIndex 图层索引
+     */
     setZIndex(zIndex) {
         this._zIndex = zIndex;
         if (this._container) this._container.style.zIndex = this._zIndex;
 
         this._mouseLayer.setZIndex(this._zIndex + 1);
     }
+
+    /**
+     * 样式发生变化会触发
+     */
     _onOptionChange() {
         this._map && this._initLegend();
     }
+
+    /**
+     * 样式发生变化会触发
+     */
     _onDataChange() {
         this._map && this._initLegend();
     }
+
+    /**
+     * 参数初始化
+     */
     _parameterInit() {
         this._map.addOverlay(this._mouseLayer);
         this._initLegend();
     }
+
+    /**
+     * 设置配置项
+     * @param {Object} ops 
+     */
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
         if (!isEmpty(this._option.draw)) {
@@ -62,10 +88,19 @@ export default class PointOverlay extends Parameter {
             this._batchesData = null;
         }
     }
+
+    /**
+     * 设置绘制状态
+     * @param {*} val 
+     */
     _setState(val) {
         this._state = val;
         this._eventConfig.onState.call(this, this._state);
     }
+
+    /**
+     * 绘制图层
+     */
     _toDraw() {
         this._drawMap();
     }
