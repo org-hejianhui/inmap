@@ -1,3 +1,11 @@
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.29
+ * Version: 0.0.1
+ * Description: ZC框架的基类ß
+ */
+
 import WorkerMrg from '../../common/WorkerMrg';
 
 let baseClassCounter = 0;
@@ -28,7 +36,7 @@ Function.prototype.inherits = function (parentClass, className) {
 
 
 /**
- * TD框架的基类
+ * ZC框架的基类
  * @namespace
  * @name BaseClass
  */

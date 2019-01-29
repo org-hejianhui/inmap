@@ -1,15 +1,22 @@
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.29
+ * Version: 0.0.1
+ * Description: 接口定义，参数解析类
+ */
 import {
-    isNumber,
-    detectmob,
-    isEmpty,
-    merge,
-    typeOf,
-    checkGeoJSON,
-    clearPushArray
+    isNumber,   // 是否为Number类型
+    detectmob,  // 检查设备类型
+    isEmpty,    // 是否为空
+    merge,      // 数组合并
+    typeOf,     // 类型判断
+    checkGeoJSON,   // GeoJSON 数据格式校验
+    clearPushArray  // 清空数组并添加新内容
 } from '../../common/Util';
-import CanvasOverlay from './CanvasOverlay';
-import Color from './../../common/Color';
-let isMobile = detectmob();
+import CanvasOverlay from './CanvasOverlay';    // 图层绘制类
+import Color from './../../common/Color';   // 颜色工具对象
+let isMobile = detectmob(); // 是否是移动设备
 /**
  * 接头定义 参数解析类
  */
@@ -24,6 +31,12 @@ export default class Parameter extends CanvasOverlay {
         this._overItem = null; //悬浮
         this._setStyle(baseConfig, ops);
     }
+
+    /**
+     * 样式风格设置
+     * @param {Array} config 基本配置
+     * @param {Array} ops 动态配置
+     */
     _setStyle(config, ops) {
         ops = ops || {};
 
@@ -50,10 +63,20 @@ export default class Parameter extends CanvasOverlay {
         this.toolTip && this.toolTip.setOption(this._tooltipConfig);
 
     }
+
+    /**
+     * GeoJSON 数据格式检查
+     * @param {Object} data 
+     */
     _checkGeoJSON(data) {
         let isCheckCount = this._styleConfig.colors.length > 0 || this._styleConfig.splitList.length > 0;
         checkGeoJSON(data, this._option.checkDataType.name, isCheckCount);
     }
+    
+    /**
+     * 设置数据
+     * @param {Object} points 
+     */
     setData(points) {
         if (points) {
             this._checkGeoJSON(points);
@@ -73,15 +96,29 @@ export default class Parameter extends CanvasOverlay {
     _onDataChange() {
         /**抽象方法，数据发生变化会触发 */
     }
+
+    /**
+     * 设置坐标点串
+     * @param {Object} points 
+     */
     setPoints(points) {
         this.setData(points);
     }
+
+    /**
+     * 获取渲染的数据
+     */
     getRenderData() {
         return this._workerData;
     }
+
+    /**
+     * 获取转换后数据
+     */
     _getTransformData() {
         return this._workerData.length > 0 ? this._workerData : this._data;
     }
+
     /**
      * 清除wokerData
      * 清除悬浮引用
@@ -90,6 +127,7 @@ export default class Parameter extends CanvasOverlay {
         clearPushArray(this._workerData);
         this._overItem = null;
     }
+
     /**
      * 清除选中
      * @memberof Parameter
@@ -97,6 +135,7 @@ export default class Parameter extends CanvasOverlay {
     _cancerSelectd() {
         clearPushArray(this._selectItem, []);
     }
+
     /**
      * 设置选中集合
      */
@@ -104,12 +143,20 @@ export default class Parameter extends CanvasOverlay {
         clearPushArray(this._selectItem, list);
         this._map && this.refresh();
     }
+
+    /**
+     * 设置转换后数据
+     * @param {Array} val 
+     */
     _setWorkerData(val) {
         this._data = []; //优化
         this._overItem = null;
         clearPushArray(this._workerData, val);
     }
 
+    /**
+     * 初始化
+     */
     _canvasInit() {
         this.toolTip.setOption(this._tooltipConfig);
         this._parameterInit();
@@ -118,6 +165,11 @@ export default class Parameter extends CanvasOverlay {
     _parameterInit() {
         /** 抽象方法，子类去实现*/
     }
+
+    /**
+     * 转换成rgba
+     * @param {Object} styleConfig 
+     */
     _toRgba(styleConfig) {
         ['normal', 'mouseOver', 'selected'].forEach((status) => {
             let statusStyle = styleConfig[status];
@@ -138,6 +190,7 @@ export default class Parameter extends CanvasOverlay {
             }
         });
     }
+
     /**
      * 根据用户配置，设置用户绘画样式
      * @param {*} item 数据行
@@ -199,6 +252,12 @@ export default class Parameter extends CanvasOverlay {
         }
         return result;
     }
+
+    /**
+     * 合并数据项
+     * @param {*} normal 
+     * @param {*} condition 
+     */
     _mergeCondition(normal, condition) {
         if (condition.opacity == null && normal.opacity != null) {
             normal.opacity = null;
@@ -208,6 +267,7 @@ export default class Parameter extends CanvasOverlay {
         }
         return merge(normal, condition);
     }
+    
     /**
      * 亮度效果
      */

@@ -1,17 +1,22 @@
-/*
- * 点的绘制
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.29
+ * Version: 0.0.1
+ * Description: 点图层组件，以散点的方式标注地理位置，可配置散点大小、背景颜色、边框宽度、边框颜色、以及鼠标事件等
  */
-import CanvasOverlay from './base/CanvasOverlay.js';
+import CanvasOverlay from './base/CanvasOverlay.js';    // 图层绘制类
 import Label from './../worker/helper/Label';
-import Parameter from './base/Parameter';
+import Parameter from './base/Parameter';   // 参数解析类
 import {
-    isEmpty,
-    detectmob,
+    isEmpty,    // 是否为空
+    detectmob,  // 检查设备类型
 } from '../common/Util.js';
-import BatchesData from './base/BatchesData';
-import PointConfig from '../config/PointConfig';
-import State from './../config/OnStateConfig';
-let isMobile = detectmob();
+import BatchesData from './base/BatchesData';   // 数据分批间断执行
+import PointConfig from '../config/PointConfig';    // 默认散点参数结构
+import State from './../config/OnStateConfig';  // 绘制状态
+let isMobile = detectmob(); // 是否是移动设备
+
 export default class PointOverlay extends Parameter {
     constructor(opts) {
         super(PointConfig, opts);

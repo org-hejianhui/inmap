@@ -1,5 +1,9 @@
 import deepmerge from 'deepmerge';
 
+/**
+ * 类型判断
+ * @param {Object} obj 
+ */
 export function typeOf(obj) {
     const toString = Object.prototype.toString;
     const map = {
@@ -16,6 +20,11 @@ export function typeOf(obj) {
     };
     return map[toString.call(obj)];
 }
+
+/**
+ * 是否为Number类型
+ * @param {Number} num 
+ */
 export function isNumber(num) {
     return typeOf(num) == 'number';
 }
@@ -54,6 +63,7 @@ export function isString(string) {
 export function isObject(object) {
     return typeOf(object) == 'object';
 }
+
 /**
  * 判断目标参数是否Array对象
  * @param {Mix} 
@@ -100,6 +110,11 @@ export const extend = function (target, source) {
     }
     return target;
 };
+
+/**
+ * 设置设备像素
+ * @param {Object} context 设备对象
+ */
 export function setDevicePixelRatio(context) {
     let devicePixelRatio = window.devicePixelRatio;
     context.canvas.width = context.canvas.width * devicePixelRatio;
@@ -109,6 +124,11 @@ export function setDevicePixelRatio(context) {
 
     context.scale(devicePixelRatio, devicePixelRatio);
 }
+
+/**
+ * HTML字符串转义
+ * @param {String} source 
+ */
 export function encodeHTML(source) {
     return String(source)
         .replace(/&/g, '&amp;')
@@ -158,7 +178,9 @@ export function isPolyContainsPt(lng, lat, geos) {
 }
 
 
-
+/**
+ * 检查设备类型
+ */
 export function detectmob() {
     if (navigator.userAgent.match(/Android/i) ||
         navigator.userAgent.match(/webOS/i) ||
@@ -200,6 +222,11 @@ export function merge() {
     });
 }
 
+/**
+ * 清空数组并添加新内容
+ * @param {Array} a 原数组
+ * @param {Array} b 新数组
+ */
 export function clearPushArray(a, b) {
     if (Array.isArray(b)) {
         a.splice(0, a.length);
@@ -212,6 +239,13 @@ export function clearPushArray(a, b) {
         a.splice(0, a.length);
     }
 }
+
+/**
+ * 检验数据类型
+ * @param {*} row 
+ * @param {*} isCheckName 
+ * @param {*} isCheckCount 
+ */
 export function checkType(row, isCheckName, isCheckCount) {
     let nameType = typeOf(row.name);
     let countType = typeOf(row.count);
@@ -247,6 +281,12 @@ export function checkType(row, isCheckName, isCheckCount) {
 
 }
 
+/**
+ * GeoJSON 格式校验
+ * @param {*} data geojson数据
+ * @param {*} isCheckName 
+ * @param {*} isCheckCount 
+ */
 export function checkGeoJSON(data, isCheckName, isCheckCount) {
     if (!data) return;
     if (!isArray(data)) {
