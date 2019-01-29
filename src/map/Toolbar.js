@@ -25,7 +25,7 @@ export default class Toolbar {
      */
     _create(mapDom) {
         let div = document.createElement('div');
-        div.classList.add('inmap-container');
+        div.classList.add('zcmap-container');
         mapDom.appendChild(div);
         return div;
     }
@@ -36,7 +36,7 @@ export default class Toolbar {
      */
     _createLegendContainer(parentDom) {
         let div = document.createElement('div');
-        div.classList.add('inmap-legend-container');
+        div.classList.add('zcmap-legend-container');
         parentDom.appendChild(div);
         return div;
     }

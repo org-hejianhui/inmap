@@ -29,7 +29,7 @@ export default class MapZoom {
      */
     _createDom() {
         let div = document.createElement('div');
-        div.classList.add('inmap-scale-group');
+        div.classList.add('zcmap-scale-group');
         div.innerHTML = '<a>+</a > <a>-</a >';
         this._mapDom.appendChild(div);
         this._event(div);
@@ -40,7 +40,7 @@ export default class MapZoom {
      * 设置按钮状态
      */
     setButtonState() {
-        let doms = this._mapDom.querySelectorAll('.inmap-scale-group a');
+        let doms = this._mapDom.querySelectorAll('.zcmap-scale-group a');
         let zoom = this._map.getZoom();
 
         if (zoom >= this._zoom.max || zoom >= this._confine.max) {

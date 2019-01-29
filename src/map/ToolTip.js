@@ -29,7 +29,7 @@ export default class ToolTip {
      */
     _create(toolDom) {
         let dom = document.createElement('div');
-        dom.classList.add('inmap-tooltip');
+        dom.classList.add('zcmap-tooltip');
         toolDom.appendChild(dom);
         return dom;
     }

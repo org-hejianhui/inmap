@@ -68,7 +68,7 @@ export default class Map {
         this._tMapStyle(bmap, this._option.skin);
 
         // 创建工具对象
-        bmap._inmapToolBar = new Toolbar(mapDom);
+        bmap._zcmapToolBar = new Toolbar(mapDom);
 
         // 设置地图中心点，及缩放比例
         let center = this._option.center;
@@ -123,7 +123,7 @@ export default class Map {
      */
     add(overlay) {
         if (overlay._isDispose) {
-            throw new TypeError('inMap: overlay has been destroyed.');
+            throw new TypeError('zcmap: overlay has been destroyed.');
         } else if (overlay instanceof MultiOverlay) {
             overlay._init(this._map);
         } else {

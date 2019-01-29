@@ -33,7 +33,7 @@ export default class Legend {
      */
     _crateDom(toolDom) {
         let div = document.createElement('div');
-        div.classList.add('inmap-legend');
+        div.classList.add('zcmap-legend');
         toolDom.appendChild(div);
         return div;
     }
@@ -129,7 +129,7 @@ export default class Legend {
 
         let str = '';
         if (title) {
-            str = `<div class="inmap-legend-title">${title} </div>`;
+            str = `<div class="zcmap-legend-title">${title} </div>`;
         }
 
         str += '<table cellpadding="0" cellspacing="0">';
@@ -156,7 +156,7 @@ export default class Legend {
                 if (val.start == val.end) {
                     text = `${this._opts.formatter(val.start, index, val)}`;
                 } else {
-                    text = `${val.start==null?'-<span class="inmap-infinity"></span>': this._opts.formatter(val.start, index, val)} ~ ${ val.end==null ?'+<span class="inmap-infinity"></span>':this._opts.formatter(val.end, index, val)}`;
+                    text = `${val.start==null?'-<span class="zcmap-infinity"></span>': this._opts.formatter(val.start, index, val)} ~ ${ val.end==null ?'+<span class="zcmap-infinity"></span>':this._opts.formatter(val.end, index, val)}`;
                 }
 
             } else {
@@ -164,14 +164,14 @@ export default class Legend {
                 if (val.start == val.end) {
                     text = `${this._toFixed(val.start)}`;
                 } else {
-                    text = `${val.start==null?'-<span class="inmap-infinity"></span>': this._toFixed(val.start)} ~ ${ val.end==null ?'+<span class="inmap-infinity"></span>':this._toFixed(val.end)}`;
+                    text = `${val.start==null?'-<span class="zcmap-infinity"></span>': this._toFixed(val.start)} ~ ${ val.end==null ?'+<span class="zcmap-infinity"></span>':this._toFixed(val.end)}`;
                 }
             }
             let td = isShow ? ` <td style="background:${backgroundColor}; width:17px;height:17px;"></td>` : '';
             str += `
                 <tr>
                    ${td}
-                    <td class="inmap-legend-text">
+                    <td class="zcmap-legend-text">
                        ${text}
                     </td>
                 </tr>
