@@ -5,7 +5,7 @@
  * Version: 0.0.1
  * Description: 文字图层组件，在地理位置上标记文字，可配置文字大小、颜色、背景阴影、以及鼠标事件等
  */
-import Parameter from './base/Parameter';   // 参数解析类
+import Parameter from './base/Parameter';   // 接口定义，参数解析类
 import Config from '../config/LabelConfig'; // 文字图层组件配置类
 import State from './../config/OnStateConfig';  // 状态类
 
@@ -47,7 +47,7 @@ export default class LabelOverlay extends Parameter {
     }
 
     /**
-     * 重新绘制图层
+     * 绘制图层
      */
     _toDraw() {
         this._drawMap();
@@ -146,7 +146,7 @@ export default class LabelOverlay extends Parameter {
     }
 
     /**
-     * 根据选中的数据项获取索引
+     * 查询选中列表的索引
      * @param {*} item 
      */
     _findIndexSelectItem(item) {
@@ -172,7 +172,7 @@ export default class LabelOverlay extends Parameter {
     }
 
     /**
-     * 
+     * 变量交换
      * @param {*} index 
      * @param {*} item 
      */
@@ -186,7 +186,7 @@ export default class LabelOverlay extends Parameter {
     /**
      * 绘制标记文字
      * @param {*} ctx 上下文对象
-     * @param {*} pixels 文字数据
+     * @param {*} pixels 数据集
      */
     _drawLabel(ctx, pixels) {
         ctx.textBaseline = 'top';

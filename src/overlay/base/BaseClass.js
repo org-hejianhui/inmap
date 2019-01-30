@@ -3,7 +3,7 @@
  * Author: org_hejianhui@163.com
  * Date: 2019.01.29
  * Version: 0.0.1
- * Description: ZC框架的基类ß
+ * Description: ZC框架的基类
  */
 
 import WorkerMrg from '../../common/WorkerMrg';

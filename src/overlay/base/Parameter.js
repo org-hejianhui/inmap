@@ -321,6 +321,9 @@ export default class Parameter extends CanvasOverlay {
         this.toolTip.render(event, this._overItem);
     }
 
+	/**
+	 * 清除
+	 */
     _Tclear() {
         this._data = null;
         this._workerData = null;
@@ -361,15 +364,27 @@ export default class Parameter extends CanvasOverlay {
     refresh() {
         /** 抽象方法需要子类去实现 */
     }
+    
+    /**
+     * 变量交换
+     */
     _swopData(index, item) {
         if (isNumber(index) && index > -1) {
             this._workerData[index] = this._workerData[this._workerData.length - 1];
             this._workerData[this._workerData.length - 1] = item;
         }
     }
+    
+    /**
+     * 鼠标离开
+     */
     _tMouseleave() {
         this.tooltip.hide();
     }
+    
+    /**
+     * 鼠标移动
+     */
     _tMousemove(event) {
         if (this._eventType == 'onmoving') {
             return;
@@ -400,6 +415,10 @@ export default class Parameter extends CanvasOverlay {
         this._setTooltip(event);
 
     }
+    
+    /**
+     * 鼠标点击
+     */
     _tMouseClick(event) {
         if (this._eventType == 'onmoving') return;
         let {

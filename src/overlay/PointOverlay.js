@@ -3,7 +3,7 @@
  * Author: org_hejianhui@163.com
  * Date: 2019.01.29
  * Version: 0.0.1
- * Description: 点图层组件，以散点的方式标注地理位置，可配置散点大小、背景颜色、边框宽度、边框颜色、以及鼠标事件等
+ * Description: 散点图层组件，以散点的方式标注地理位置，可配置散点大小、背景颜色、边框宽度、边框颜色、以及鼠标事件等
  */
 import CanvasOverlay from './base/CanvasOverlay.js';    // 图层绘制类
 import Label from './../worker/helper/Label';
@@ -44,7 +44,7 @@ export default class PointOverlay extends Parameter {
     }
 
     /**
-     * 设置图层索引
+     * 设置当前的图层的z-index值。注意：被and添加之后才能调用生效,zcmap默认是按照添加图层的顺序设置层级的
      * @param {Nubmer} zIndex 图层索引
      */
     setZIndex(zIndex) {
@@ -104,6 +104,10 @@ export default class PointOverlay extends Parameter {
     _toDraw() {
         this._drawMap();
     }
+    
+    /**
+     * 计算像素
+     */
     _calculateMpp(size) {
         let normal = this._styleConfig.normal,
             result;
@@ -123,10 +127,11 @@ export default class PointOverlay extends Parameter {
             }
             result = size / mpp;
         } else {
-            throw new TypeError('inMap: style.normal.unit must be is "m" or "px" .');
+            throw new TypeError('zcMap: style.normal.unit must be is "m" or "px" .');
         }
         return result;
     }
+    
     /**
      * 获得每个像素对应多少米	
      */
@@ -138,6 +143,11 @@ export default class PointOverlay extends Parameter {
         return this._map.getDistance(mapCenter, cpt) / dpx;
     }
 
+	 /**
+     * 数据偏移转化
+     * @param {*} distanceX X轴偏移
+     * @param {*} distanceY Y轴偏移
+     */
     _translation(distanceX, distanceY) {
         if (this._batchesData && !this._batchesData.usable) return;
         for (let i = 0; i < this._workerData.length; i++) {
@@ -148,16 +158,28 @@ export default class PointOverlay extends Parameter {
 
         this.refresh();
     }
+    
+    /**
+     * 重新绘制
+     */
     _drawMouseLayer() {
         let overArr = this._overItem ? [this._overItem] : [];
         this._mouseLayer._clearCanvas();
         this._loopDraw(this._mouseLayer._getContext(), this._selectItem.concat(overArr), true);
 
     }
+    
+    /**
+     * 清空所有
+     */
     _clearAll() {
         this._mouseLayer._clearCanvas();
         this._clearCanvas();
     }
+    
+     /**
+     * 重新绘制图层对象
+     */
     _drawMap() {
         if (this._batchesData) {
             this._batchesData.clear();
@@ -186,6 +208,10 @@ export default class PointOverlay extends Parameter {
 
         });
     }
+    
+     /**
+     * 更新图层对象内容
+     */
     _updateOverClickItem() {
         let overArr = this._overItem ? [this._overItem] : [];
         let allItems = this._selectItem.concat(overArr);
@@ -200,6 +226,7 @@ export default class PointOverlay extends Parameter {
             item.geometry.pixel = ret.geometry.pixel;
         }
     }
+    
     /**
      * 颜色等分策略
      * @param {} data 
@@ -257,6 +284,11 @@ export default class PointOverlay extends Parameter {
         this._setlegend(this._legendConfig, this._styleConfig.splitList);
     }
 
+	/**
+     * 根据鼠标像素坐标获取数据项
+     * @param {*} mouseX 
+     * @param {*} mouseY 
+     */
     _getTarget(mouseX, mouseY) {
         let pixels = this._workerData,
             ctx = this._ctx;
@@ -286,6 +318,11 @@ export default class PointOverlay extends Parameter {
             item: null
         };
     }
+    
+     /**
+     * 查询选中列表的索引
+     * @param {*} item 
+     */
     _findIndexSelectItem(item) {
         let index = -1;
         if (item) {
@@ -297,6 +334,10 @@ export default class PointOverlay extends Parameter {
         }
         return index;
     }
+    
+    /**
+     * 刷新图层对象
+     */
     refresh() {
         this._setState(State.drawBefore);
         this._clearCanvas();
@@ -314,14 +355,21 @@ export default class PointOverlay extends Parameter {
         this._drawMouseLayer();
         this._setState(State.drawAfter);
     }
+    
+     /**
+     * 变量交换
+     * @param {*} index 
+     * @param {*} item 
+     */
     _swopData(index, item) {
         if (index > -1 && !this._styleConfig.normal.label.show) { //导致文字闪
             this._workerData[index] = this._workerData[this._workerData.length - 1];
             this._workerData[this._workerData.length - 1] = item;
         }
     }
+    
     /**
-     * 
+     * 绘制点
      * @param {*} ctx 上下文
      * @param {*} pixels 数据集
      * @param {*} otherMode 是否绘画选中数据
@@ -357,6 +405,12 @@ export default class PointOverlay extends Parameter {
             }
         }
     }
+    
+    /**
+     * 绘制标记文字
+     * @param {*} ctx 上下文对象
+     * @param {*} pixels 数据集
+     */
     _drawLabel(ctx, pixels) {
         let fontStyle = this._styleConfig.normal.label;
         let fontSize = parseInt(fontStyle.font);
@@ -426,6 +480,12 @@ export default class PointOverlay extends Parameter {
             }
         });
     }
+    
+    /**
+     * 绘制圆
+     * @param {*} ctx 上下文对象
+     * @param {*} pixels 数据集
+     */
     _drawCircle(ctx, x, y, radius, color, lineWidth, strokeStyle) {
         ctx.beginPath();
         ctx.fillStyle = color;
@@ -439,11 +499,19 @@ export default class PointOverlay extends Parameter {
             ctx.stroke();
         }
     }
+    
+    /**
+     * 数据释放
+     */
     _Tdispose() {
         this._batchesData && this._batchesData.clear();
         this._map.removeOverlay(this._mouseLayer);
         this._mouseLayer.dispose();
     }
+    
+    /**
+     * 鼠标移动
+     */
     _tMousemove(event) {
 
         if (this._eventType == 'onmoving') {
@@ -471,6 +539,10 @@ export default class PointOverlay extends Parameter {
         this._setTooltip(event);
 
     }
+    
+     /**
+     * 鼠标点击
+     */
     _tMouseClick(event) {
         if (this._eventType == 'onmoving') return;
         let {

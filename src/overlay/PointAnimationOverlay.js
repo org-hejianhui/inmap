@@ -1,12 +1,29 @@
-import CanvasOverlay from './base/CanvasOverlay.js';
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.30
+ * Version: 0.0.1
+ * Description: 散点动画图层组件，散点的动画图层，一般不单独使用，跟其他图层一起使用，增强效果
+ */
+import CanvasOverlay from './base/CanvasOverlay.js';	// 图层绘制类
 import {
-    merge,
-    isArray
+    merge,	// 数组合并
+    isArray	// 是否是数组
 } from './../common/Util';
-import config from '../config/PointAnimation';
+import config from '../config/PointAnimation';	// 散点动画参数结构
 
 
+/**
+ * 点标记对象
+ */
 class Marker {
+	
+	 /**
+     * 构造函数
+     * @param {Object} opts 配置项
+     * @param {Object} data 数据集
+     * @param {Object} map 地图对象
+     */
     constructor(opts, data, map) {
         this.city = opts.name;
         this.location = new BMap.Point(data.geometry.coordinates[0], data.geometry.coordinates[1]);
@@ -16,6 +33,11 @@ class Marker {
         this.radius = 0;
         this.size = opts.size;
     }
+    
+    /**
+     * 点标记绘制
+     * @param {Object} context 上下文对象 
+     */
     draw(context) {
         let pixel = this.pixel;
         context.save();
@@ -33,7 +55,16 @@ class Marker {
     }
 
 }
+
+/**
+ * 散点动画图层组件
+ */
 export default class PointAnimationOverlay extends CanvasOverlay {
+	
+	/**
+	 * 构造函数
+	 * @param {Object} opts 配置项
+	 */
     constructor(ops) {
         super();
         this._data = [];
@@ -42,6 +73,10 @@ export default class PointAnimationOverlay extends CanvasOverlay {
         this._render = this._render.bind(this);
         this.setOptionStyle(ops);
     }
+    
+    /**
+     * 图层绘制初始化
+     */
     _canvasInit() {
         this._addMarker();
         let now, me = this;
@@ -59,6 +94,10 @@ export default class PointAnimationOverlay extends CanvasOverlay {
             }
         }());
     }
+    
+    /**
+     * 设置当前样式，会造成画布重绘
+     */
     setOptionStyle(ops) {
         if (!ops) return;
         let option = merge(config, ops);
@@ -71,6 +110,10 @@ export default class PointAnimationOverlay extends CanvasOverlay {
         }
         this.setData(option.data);
     }
+    
+    /**
+     * 设置当前图层的数据
+     */
     setData(points) {
         if (points) {
             if (!isArray(points)) {
@@ -83,6 +126,12 @@ export default class PointAnimationOverlay extends CanvasOverlay {
 
         this._map && this._addMarker();
     }
+    
+     /**
+     * 数据偏移转化
+     * @param {*} distanceX X轴偏移
+     * @param {*} distanceY Y轴偏移
+     */
     _translation(distanceX, distanceY) {
 
         for (let i = 0; i < this._markers.length; i++) {
@@ -92,6 +141,10 @@ export default class PointAnimationOverlay extends CanvasOverlay {
         }
 
     }
+    
+    /**
+     * 添加点标记
+     */
     _addMarker() {
         this._markers = [];
         for (let i = 0; i < this._data.length; i++) {
@@ -100,10 +153,18 @@ export default class PointAnimationOverlay extends CanvasOverlay {
         }
 
     }
+    
+    /**
+     * 绘制当前图层
+     */
     _toDraw() {
         this._addMarker();
         this._canvasResize();
     }
+    
+    /**
+     * 渲染当前图层
+     */
     _render() {
         let ctx = this._ctx;
         if (!ctx) {

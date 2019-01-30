@@ -1,3 +1,10 @@
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.30
+ * Version: 0.0.1
+ * Description: 自定义图标类型配置类，建议使用svg格式效果更佳
+ */
 export default {
     tooltip: {
         show: true,

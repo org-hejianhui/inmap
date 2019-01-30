@@ -1,30 +1,63 @@
-import Parameter from './base/Parameter';
-import ImgConfig from './../config/ImgConfig';
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.30
+ * Version: 0.0.1
+ * Description: 自定义图标类型，建议使用svg格式效果更佳
+ */
+import Parameter from './base/Parameter';	// 接口定义，参数解析类
+import ImgConfig from './../config/ImgConfig';	// 自定义图标类型配置类
 import {
-    isString,
-    merge,
-    typeOf
+    isString,	// 是否是字符串
+    merge,	// 数组合并
+    typeOf	// 类型判断
 } from './../common/Util';
-import State from './../config/OnStateConfig';
+import State from './../config/OnStateConfig';	// 图层状态类
+
 /*
  * 点的绘制
  */
 export default class ImgOverlay extends Parameter {
+	
+	/**
+	 * 构造函数
+	 * @param {Object} opts 配置项
+	 */
     constructor(opts) {
         super(ImgConfig, opts);
         this._cacheImg = {}; //缓存图片对象
         this._state = null;
     }
+    
+    /**
+     * 绘制画布
+     */
     _toDraw() {
         this._drawMap();
     }
+    
+    /**
+     * 设置当前样式，会造成画布重绘.
+     * @param {Object} opts 配置项
+     */
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
+    
+    /**
+     * 设置当前状态
+     * @param {Number} val 状态值
+     */
     _setState(val) {
         this._state = val;
         this._eventConfig.onState.call(this, this._state);
     }
+    
+    /**
+     * 数据偏移转化
+     * @param {*} distanceX X轴偏移
+     * @param {*} distanceY Y轴偏移
+     */
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._workerData.length; i++) {
             let pixel = this._workerData[i].geometry.pixel;
@@ -36,6 +69,10 @@ export default class ImgOverlay extends Parameter {
         this.refresh();
 
     }
+    
+    /**
+     * 绘制当前图层
+     */
     _drawMap() {
 
         this._setState(State.computeBefore);
@@ -53,9 +90,24 @@ export default class ImgOverlay extends Parameter {
         });
     }
 
+	/**
+     * 判断鼠标坐标是否在范围内
+     * @param {*} mouseX 鼠标X轴坐标
+     * @param {*} mouseY 鼠标Y轴坐标
+     * @param {*} x 目标对象 x
+     * @param {*} y 目标对象 y
+     * @param {*} w 目标对象 w
+     * @param {*} h 目标对象 h
+     */
     _isMouseOver(x, y, imgX, imgY, imgW, imgH) {
         return !(x < imgX || x > imgX + imgW || y < imgY || y > imgY + imgH);
     }
+    
+     /**
+     * 根据鼠标像素坐标获取数据项
+     * @param {*} mouseX 
+     * @param {*} mouseY 
+     */
     _getTarget(x, y) {
         let pixels = this._workerData;
 
@@ -102,6 +154,11 @@ export default class ImgOverlay extends Parameter {
 
 
     }
+    
+     /**
+     * 查询选中列表的索引
+     * @param {*} item 
+     */
     _findIndexSelectItem(item) {
         let index = -1;
         if (item) {
@@ -112,6 +169,10 @@ export default class ImgOverlay extends Parameter {
 
         return index;
     }
+    
+    /**
+     * 刷新当前图层
+     */
     refresh() {
         this._setState(State.drawBefore);
         this._clearCanvas();
@@ -119,6 +180,13 @@ export default class ImgOverlay extends Parameter {
         this._setState(State.drawAfter);
 
     }
+    
+    
+    /**
+     * 图标加载
+     * @param {*} img 图标
+     * @param {*} fun 回调函数
+     */
     _loadImg(img, fun) {
         let me = this;
         if (isString(img)) {
@@ -138,6 +206,10 @@ export default class ImgOverlay extends Parameter {
             fun(img);
         }
     }
+    
+    /**
+     * 判断是否百分比
+     */
     _isPercent(val) {
         if (val.toString().indexOf('%') > -1) {
             return true;
@@ -146,6 +218,15 @@ export default class ImgOverlay extends Parameter {
         }
 
     }
+    
+    /**
+     * 获取偏移的坐标
+     * @param {*} pixel 像素坐标
+     * @param {*} offsetL 左偏移量 
+     * @param {*} offsetT 右偏移量
+     * @param {*} width 图标宽度
+     * @param {*} height 图标的高度
+     */
     _getDrawXY(pixel, offsetL, offsetT, width, height) {
         let x = 0,
             y = 0;
@@ -169,6 +250,7 @@ export default class ImgOverlay extends Parameter {
             y: y
         };
     }
+    
     /**
      * 根据用户配置，设置用户绘画样式
      * @param {*} item 
@@ -198,10 +280,15 @@ export default class ImgOverlay extends Parameter {
             }
         }
 
-
         return result;
 
     }
+    
+    /**
+     * 循环绘制
+     * @param {*} ctx 上下文
+     * @param {*} pixels 数据集
+     */
     _loopDraw(ctx, pixels) {
         let mapSize = this._map.getSize();
         for (let i = 0, len = pixels.length; i < len; i++) {
@@ -222,6 +309,16 @@ export default class ImgOverlay extends Parameter {
             }
         }
     }
+    
+    /**
+     * 绘制图标
+     * @param {*} ctx 上下文
+     * @param {*} img 图标
+     * @param {*} x 图标 x
+     * @param {*} y 图标 y
+     * @param {*} w 图标宽度
+     * @param {*} h 图标的高度
+     */
     _drawImage(ctx, img, x, y, width, height) {
         ctx.drawImage(img, x, y, width, height);
     }

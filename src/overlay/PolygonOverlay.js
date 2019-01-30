@@ -1,13 +1,25 @@
-import Parameter from './base/Parameter.js';
-import Color from '../common/Color.js';
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.30
+ * Version: 0.0.1
+ * Description: 不规则图形的绘画：可以设置背景颜色、高亮、边框宽度、边框颜色、还有鼠标事件等
+ */
+import Parameter from './base/Parameter.js';	// 接口定义，参数解析类
+import Color from '../common/Color.js';	// 颜色工具类
 import {
-    clearPushArray
+    clearPushArray	//  清空数组并添加新内容
 } from '../common/Util.js';
-import PolygonConfig from '../config/PolygonConfig.js';
-import State from '../config/OnStateConfig.js';
+import PolygonConfig from '../config/PolygonConfig.js';	// 不规则图形的配置类
+import State from '../config/OnStateConfig.js';	// 图层状态类
 
 
 export default class PolygonOverlay extends Parameter {
+	
+	/**
+	 * 构造函数
+	 * @param {Object} opts 配置项
+	 */
     constructor(ops) {
         super(PolygonConfig, ops);
         this._patchSplitList();
@@ -17,9 +29,17 @@ export default class PolygonOverlay extends Parameter {
             this._swopData = () => {};
         }
     }
+    
+    /**
+     * 参数初始化
+     */
     _parameterInit() {
         this._initLegend();
     }
+    
+    /**
+     * 图例对象初始化
+     */
     _initLegend() {
         const splitList = this._styleConfig.splitList;
         if (splitList.length === 0) {
@@ -29,6 +49,7 @@ export default class PolygonOverlay extends Parameter {
         this._setlegend(this._legendConfig, this._styleConfig.splitList);
     }
 
+	
     setCustomZoom(zoom) {
         this._customZoom = zoom;
         this._drawMap();
