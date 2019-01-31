@@ -1,14 +1,26 @@
- import CanvasOverlay from '../base/CanvasOverlay';
- import PolygonOverlay from '../PolygonOverlay';
- import PointDragOverlay from './PointDragOverlay';
- import config from '../../config/PolygonEditorConfig';
+ /**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.31
+ * Version: 0.0.1
+ * Description: 在地图上创建可编辑多边形,支持数万个点大数据围栏编辑
+ */
+ import CanvasOverlay from '../base/CanvasOverlay'; // 图层绘制类
+ import PolygonOverlay from '../PolygonOverlay';    // 不规则图形的绘画
+ import PointDragOverlay from './PointDragOverlay'; // 点拖拽绘制图层
+ import config from '../../config/PolygonEditorConfig';     // 多边形编辑配置类
  import {
-     merge,
-     isPolyContains,
+     merge, // 数组合并
+     isPolyContains,    // 是否被包含
  } from '../../common/Util';
 
  export default class PolygonEditorOverlay2 extends CanvasOverlay {
-     constructor(opts) {
+     
+    /**
+	 * 构造函数
+	 * @param {Object} opts 配置项
+	 */
+    constructor(opts) {
          super(opts);
          this._opts = merge(config, opts);
          this._eventConfig = this._opts.event;
@@ -33,6 +45,11 @@
          this.isCreate = false;
 
      }
+
+     /**
+     * 设置当前的图层的z-index值。注意：被and添加之后才能调用生效,zcmap默认是按照添加图层的顺序设置层级的
+     * @param {Number} zIndex 索引值
+     */
      setZIndex(zIndex) {
          this._zIndex = zIndex;
          if (this._container) this._container.style.zIndex = this._zIndex;
@@ -41,6 +58,10 @@
          this._pointOverlay && this._pointOverlay.setZIndex(this._zIndex + 2);
          this._virtualPointOverlay && this._virtualPointOverlay.setZIndex(this._zIndex + 4);
      }
+
+     /**
+      * 画布初始化
+      */
      _canvasInit() {
          this._polygonOverlay = new PolygonOverlay({
              checkDataType: {
@@ -114,6 +135,11 @@
          this._map.addOverlay(this._virtualPointOverlay);
          this._map.addEventListener('rightclick', this._rightclick);
      }
+
+     /**
+     * 设置当前样式，会造成画布重绘
+     * @param {Object} ops 数据集
+     */
      setOptionStyle(opts) {
 
          if (!opts) return;
@@ -144,6 +170,10 @@
              this.setPath(opts.data);
          }
      }
+
+     /**
+      * 清空数据
+      */
      _wokerDataClear() {
          this._workerData = [{
              geometry: {
@@ -155,6 +185,10 @@
              }
          }];
      }
+
+     /**
+      * 创建多边形。 注意：会清空之前的数据
+      */
      create() {
 
          this.isCreate = true;
@@ -173,6 +207,11 @@
          }
 
      }
+
+     /**
+      * 设置多边形的数据
+      * @param {Object} data 数据集
+      */
      setPath(data) {
          this.isCreate = false;
          this._opts.data = data;
@@ -184,6 +223,10 @@
          this._createIndex = -1;
          this._polygonOverlay && this._polygonOverlay.setData(this._opts.data ? [this._toMutilPolygon(data)] : []);
      }
+
+     /**
+      * 开启编辑功能
+      */
      enableEditing() {
          this.isCreate = false;
          this._opts.style.isEdit = true;
@@ -193,11 +236,21 @@
          this._setPointData();
          this._setVirtualPointData();
      }
+
+     /**
+      * 关闭编辑功能
+      */
      disableEditing() {
          this.isCreate = false;
          this._opts.style.isEdit = false;
          this._clearPointOverlay();
      }
+
+     /**
+      * 按像素平移
+      * @param {*} x 
+      * @param {*} y 
+      */
      translationPixel(x, y) {
          if (this._workerData.length > 0) {
              for (let i = 0; i < this._workerData.length; i++) {
@@ -231,6 +284,10 @@
              this._eventConfig.onChange.call(this, 'translationPixel');
          }
      }
+
+     /**
+      * 移除鼠标移动事件
+      */
      _removeMoveEvent() {
          if (!this._map) return;
          this._map.removeEventListener('click', this._clickFun);
@@ -238,6 +295,10 @@
          this._map.removeEventListener('mousemove', this._mousemoveFun);
          this._map.removeEventListener('rightclick', this._rightclick);
      }
+
+     /**
+      * 释放对象
+      */
      _Tdispose() {
          this._removeMoveEvent();
          this._map.removeOverlay(this._polygonOverlay);
@@ -247,6 +308,10 @@
          this._pointOverlay.dispose();
          this._virtualPointOverlay.dispose();
      }
+
+     /**
+      * 返回多边形的GeoJSON数据
+      */
      getPath() {
          if (this._workerData.length > 0) {
              let coordinates = JSON.parse(JSON.stringify(this._workerData[0].geometry.coordinates));
@@ -265,6 +330,11 @@
              return null;
          }
      }
+
+     /**
+      * 转换成多面几何数据集
+      * @param {*} data 
+      */
      _toMutilPolygon(data) {
          try {
              if (data && data.geometry.type == 'Polygon') {
@@ -279,6 +349,11 @@
          return data;
 
      }
+
+     /**
+      * 点击事件
+      * @param {*} event 
+      */
      _clickFun(event) {
          if (!this.isCreate) return;
 
@@ -330,6 +405,10 @@
          this._polygonOverlay.refresh();
 
      }
+
+     /**
+      * 双击事件
+      */
      _dblclickFun() {
          if (!this.isCreate) {
              return;
@@ -366,6 +445,13 @@
          this._createTempCache = null;
 
      }
+
+    /**
+     * 是否包含索引
+     * @param {*} lngLats 
+     * @param {*} polygon 
+     * @param {*} notIndex 
+     */     
      _isPolyContainsIndex(lngLats, polygon, notIndex) {
          let coordinates = polygon.geometry.coordinates;
          for (let j = 0, len = coordinates.length; j < len; j++) {
@@ -394,6 +480,11 @@
          }
          return -1;
      }
+
+     /**
+      * 右击事件
+      * @param {*} event 
+      */
      _rightclick(event) {
          if (this.isCreate || !this._opts.style.isDel || !this._opts.style.isEdit) return;
          let coordinates = this._workerData[0].geometry.coordinates;
@@ -418,6 +509,11 @@
          }
 
      }
+
+     /**
+      * 鼠标移动事件
+      * @param {*} event 
+      */
      _mousemoveFun(event) {
 
          if (!this.isCreate || !this._createTempCache) return;
@@ -436,6 +532,10 @@
          this._polygonOverlay._selectItem = [];
          this._polygonOverlay.refresh();
      }
+
+     /**
+      * 清空点标记事件
+      */
      _clearPointOverlay() {
          if (!this._pointOverlay) return;
          this._pointOverlay._setWorkerData([]);
@@ -443,6 +543,10 @@
          this._virtualPointOverlay._setWorkerData([]);
          this._virtualPointOverlay.refresh();
      }
+
+     /**
+      * 设置虚拟点数据集
+      */
      _setVirtualPointData() {
 
          let virtualData = [];
@@ -488,6 +592,10 @@
          this._virtualPointOverlay._setWorkerData(virtualData);
          this._virtualPointOverlay.refresh();
      }
+
+     /**
+      * 设置点数据集
+      */
      _setPointData() {
          this._pointDataGroup = [];
          for (let i = 0; i < this._workerData.length; i++) {
@@ -510,6 +618,15 @@
          this._pointOverlay._setWorkerData(pointData);
          this._pointOverlay.refresh();
      }
+
+     /**
+      * 坐标与坐标
+      * @param {*} coordinates 
+      * @param {*} pixels 
+      * @param {*} target 
+      * @param {*} Arrindex 
+      * @param {*} coordinatesIndex 
+      */
      _Andcoordinates(coordinates, pixels, target, Arrindex, coordinatesIndex) {
 
          for (let i = 0; i < coordinates.length; i++) {
@@ -538,6 +655,13 @@
              target.push(arr);
          }
      }
+
+     /**
+      * 绘制结束虚拟点
+      * @param {*} item 
+      * @param {*} index 
+      * @param {*} event 
+      */
      _dragEndVirtual(item, index, event) {
          let key = this._pointOverlay._workerData[index]._index;
          this._draggingPointTemp = null;
@@ -545,6 +669,13 @@
          this._updatePolygon(item, key, 'insert', event);
          this._clearCanvas();
      }
+
+     /**
+      * 绘制结束点
+      * @param {*} item 
+      * @param {*} index 
+      * @param {*} event 
+      */
      _dragEndPoint(item, index, event) {
          let key = this._pointOverlay._workerData[index]._index;
          this._draggingPointTemp = null;
@@ -552,11 +683,26 @@
          this._clearCanvas();
          this._updatePolygon(item, key, 'update', event);
      }
+
+     /**
+      * 鼠标双击事件
+      * @param {*} item 
+      * @param {*} index 
+      * @param {*} event 
+      */
      _dblclickPoint(item, index, event) {
          let key = this._pointOverlay._workerData[index]._index;
          this._clearCanvas();
          this._updatePolygon(item, key, 'delete', event);
      }
+
+     /**
+      * 更新面数据
+      * @param {*} item 
+      * @param {*} key 
+      * @param {*} action 
+      * @param {*} event 
+      */
      _updatePolygon(item, key, action, event) {
 
          let findGeometry = this._workerData[key.Arrindex].geometry;
@@ -586,6 +732,12 @@
              this._eventConfig.onChange.call(this, action, event);
          }
      }
+
+     /**
+      * 获取点数据集合
+      * @param {*} data 
+      * @param {*} item 
+      */
      _findPointDataGroup(data, item) {
          for (let i = 0; i < data.length; i++) {
              let points = data[i];
@@ -605,6 +757,11 @@
              points: null
          };
      }
+
+     /**
+      * 拖拽点标记
+      * @param {*} item 
+      */
      _draggingPoint(item) {
 
          if (!this._draggingPointTemp) {
@@ -633,12 +790,22 @@
          this._drawLine(virtualLine);
          this._setVirtualPointData();
      }
+
+     /**
+      * 拖拽虚拟点
+      * @param {*} item 
+      */
      _draggingVirtual(item) {
          let preItem = this._pointDataGroup[item.pre.index][item.pre.i];
          let nextItem = this._pointDataGroup[item.next.index][item.next.i];
          let virtualLine = [preItem, item, nextItem];
          this._drawLine(virtualLine);
      }
+
+     /**
+      * 绘制线路
+      * @param {*} data 
+      */
      _drawLine(data) {
          this._clearCanvas();
          this._ctx.beginPath();

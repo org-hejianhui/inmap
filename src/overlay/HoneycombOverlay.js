@@ -1,39 +1,84 @@
-import Parameter from './base/Parameter.js';
-import HoneycombConfig from './../config/HoneycombConfig.js';
-import State from './../config/OnStateConfig';
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.31
+ * Version: 0.0.1
+ * Description: 蜂窝聚合（跟网格聚合类似，只是聚合的图行不同），已聚合的方式展示数据的分布状态。zcmap的算法都在worker（多线程）内运算，性能优越。 通常数据量越大，效果就越好（建议数据控制在1W~10W之间）
+ */
+import Parameter from './base/Parameter.js';    // 接口定义，参数解析类
+import HoneycombConfig from './../config/HoneycombConfig.js';   // 蜂窝聚合配置类
+import State from './../config/OnStateConfig';  // 绘制图层状态类
 
 export default class HoneycombOverlay extends Parameter {
+    
+    /**
+	 * 构造函数
+	 * @param {Object} opts 配置项
+	 */
     constructor(ops) {
         super(HoneycombConfig, ops);
         this._state = null;
         this._mpp = {};
         this._drawSize = 0;
     }
+
+    /**
+     * 设置当前样式，会造成画布重绘
+     * @param {Object} ops HeatOverlayOption
+     */
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
+
+    /**
+     * 设置画布绘制状态
+     * @param {Number} val 状态
+     */
     _setState(val) {
         this._state = val;
         this._eventConfig.onState.call(this, this._state);
     }
+
+    /**
+     * 绘制当前图层
+     */
     draw() {
         this._toDraw();
     }
+
+    /**
+     * 刷新当前图层
+     */
     refresh() {
         this._setState(State.drawBefore);
         this._drawRec();
         this._setState(State.drawAfter);
     }
+
+    /**
+     * 绘制当前图层
+     */
     _toDraw() {
         this._drawMap();
     }
+
+    /**
+     * 样式发生变化会触发
+     */
     _onOptionChange() {
         this._map && this._createColorSplit();
     }
+
+    /**
+     * 样式发生变化会触发
+     */
     _onDataChange() {
         this._map && this._createColorSplit();
     }
 
+    /**
+     * 计算像素
+     */
     _calculateMpp() {
         let zoom = this._map.getZoom();
         if (this._mpp[zoom]) {
@@ -43,6 +88,7 @@ export default class HoneycombOverlay extends Parameter {
             return this._mpp[zoom];
         }
     }
+
     /**
      * 获得每个像素对应多少米	
      */
@@ -53,6 +99,10 @@ export default class HoneycombOverlay extends Parameter {
         let dpx = Math.abs(this._map.pointToPixel(mapCenter).y - this._map.pointToPixel(cpt).y);
         return this._map.getDistance(mapCenter, cpt) / dpx;
     }
+
+    /**
+     * 绘制图层画布
+     */
     _drawMap() {
         this._clearData();
         let {
@@ -113,10 +163,19 @@ export default class HoneycombOverlay extends Parameter {
 
         });
     }
+
+    /**
+     * 创建当前图层颜色等分策略
+     */
     _createColorSplit() {
         this._styleConfig.colors.length > 0 && this._compileSplitList(this._workerData);
         this._setlegend(this._legendConfig, this._styleConfig.splitList);
     }
+
+    /**
+     * 颜色等分策略
+     * @param {} data 
+     */
     _compileSplitList(data) {
 
         let colors = this._styleConfig.colors;
@@ -170,6 +229,11 @@ export default class HoneycombOverlay extends Parameter {
         this._styleConfig.splitList = result;
 
     }
+
+    /**
+     * 查询选中列表的索引
+     * @param {*} item 
+     */
     _findIndexSelectItem(item) {
         let index = -1;
         if (item) {
@@ -179,9 +243,21 @@ export default class HoneycombOverlay extends Parameter {
         }
         return index;
     }
+
+     /**
+     * 根据数据项获取样式配置
+     * @param {Object} item 数据项
+     * @param {*} i 变量
+     */
     _getStyle(item, i) {
         return this._setDrawStyle(item, true, i);
     }
+
+     /**
+     * 根据鼠标像素坐标获取数据项
+     * @param {*} x 
+     * @param {*} y 
+     */
     _getTarget(mouseX, mouseY) {
         let gridStep = this._drawSize;
         let mapSize = this._map.getSize();
@@ -213,6 +289,10 @@ export default class HoneycombOverlay extends Parameter {
             item: null
         };
     }
+
+    /**
+     * 绘制多边形
+     */
     _drawRec() {
         this._clearCanvas();
         let mapSize = this._map.getSize();
@@ -231,6 +311,15 @@ export default class HoneycombOverlay extends Parameter {
             }
         }
     }
+
+    /**
+     * 绘制线
+     * @param {*} x 
+     * @param {*} y 
+     * @param {*} gridStep 
+     * @param {*} drawStyle 
+     * @param {*} ctx 
+     */
     _drawLine(x, y, gridStep, drawStyle, ctx) {
 
         ctx.beginPath();

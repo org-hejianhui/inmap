@@ -1,13 +1,25 @@
-import CanvasOverlay from './base/CanvasOverlay';
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.31
+ * Version: 0.0.1
+ * Description: 热力图层
+ */
+import CanvasOverlay from './base/CanvasOverlay';   // 图层绘制类
 import {
-    merge,
-    clearPushArray,
-    checkGeoJSON
+    merge,  // 数组合并
+    clearPushArray, // 清空数组并添加新内容
+    checkGeoJSON    // GeoJSON 格式校验
 } from './../common/Util';
 
-import HeatConfig from './../config/HeatConfig';
-import State from './../config/OnStateConfig';
+import HeatConfig from './../config/HeatConfig';    // 热力图层配置类
+import State from './../config/OnStateConfig';  // 绘制图层状态
 export default class HeatOverlay extends CanvasOverlay {
+
+    /**
+	 * 构造函数
+	 * @param {Object} opts 配置项
+	 */
     constructor(ops) {
         super(ops);
         this._data = [];
@@ -16,18 +28,41 @@ export default class HeatOverlay extends CanvasOverlay {
         this._delteOption();
         this._state = null;
     }
+
+    /**
+     * 设置当前样式，会造成画布重绘
+     * @param {Object} ops HeatOverlayOption
+     */
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
+
+    /**
+     * 绘制当前图层
+     */
     _toDraw() {
         this._drawMap();
     }
+
+    /**
+     * 获取渲染的数据集
+     */
     getRenderData() {
         return this._workerData;
     }
+
+    /**
+     * 获取转换后数据
+     */
     _getTransformData() {
         return this._workerData.length > 0 ? this._workerData : this._data;
     }
+
+     /**
+     * 设置样式
+     * @param {Object} config 默认配置项
+     * @param {Object} ops 参数配置项
+     */
     _setStyle(config, ops) {
         ops = ops || {};
         let option = merge(config, ops);
@@ -44,9 +79,19 @@ export default class HeatOverlay extends CanvasOverlay {
         this._tMapStyle(option.skin);
 
     }
+
+    /**
+     * 检查 GeoJSON 数据集
+     * @param {Object} data 数据集
+     */
     _checkGeoJSON(data) {
         checkGeoJSON(data, this._option.checkDataType.name, this._option.checkDataType.count);
     }
+    
+    /**
+     * 设置当前图层的数据
+     * @param {Object} points 数据集
+     */
     setData(points) {
         if (points) {
             this._data = points;
@@ -57,10 +102,16 @@ export default class HeatOverlay extends CanvasOverlay {
         clearPushArray(this._workerData, []);
         this._map && this._drawMap();
     }
+
+    /**
+     * 设置画布绘制状态
+     * @param {Number} val 状态
+     */
     _setState(val) {
         this._state = val;
         this._eventConfig.onState.call(this, this._state);
     }
+
     /**
      * 屏蔽参数
      */
@@ -72,6 +123,10 @@ export default class HeatOverlay extends CanvasOverlay {
             show: false
         };
     }
+
+    /**
+     * 获取最大的数值
+     */
     _getMax() {
         let normal = this._styleConfig;
         normal.maxValue = 0;
@@ -81,6 +136,12 @@ export default class HeatOverlay extends CanvasOverlay {
             }
         }
     }
+
+    /**
+     * 数据偏移转化
+     * @param {*} distanceX X轴偏移
+     * @param {*} distanceY Y轴偏移
+     */
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._workerData.length; i++) {
             let pixel = this._workerData[i].geometry.pixel;
@@ -92,10 +153,19 @@ export default class HeatOverlay extends CanvasOverlay {
         this._setState(State.drawAfter);
 
     }
+
+    /**
+     * 设置数据项
+     * @param {Array} val 数据项
+     */
     _setWorkerData(val) {
         this._data = []; //优化
         clearPushArray(this._workerData, val);
     }
+
+    /**
+     * 绘制当前图层画布
+     */
     _drawMap() {
         this._setState(State.computeBefore);
 
@@ -114,6 +184,10 @@ export default class HeatOverlay extends CanvasOverlay {
 
         });
     }
+
+    /**
+     * 刷新当前图层
+     */
     refresh() {
         this._clearCanvas();
 
@@ -177,6 +251,14 @@ export default class HeatOverlay extends CanvasOverlay {
 
         ctx.putImageData(img, 0, 0, 0, 0, mapSize.width * this._devicePixelRatio, mapSize.height * this._devicePixelRatio);
     }
+
+    /**
+     * 绘制圆点
+     * @param {*} x x轴坐标
+     * @param {*} y y轴坐标
+     * @param {*} radius 半径范围
+     * @param {*} opacity 透明度
+     */
     _drawPoint(x, y, radius, opacity) {
         let ctx = this._ctx;
         ctx.globalAlpha = opacity;
@@ -190,6 +272,9 @@ export default class HeatOverlay extends CanvasOverlay {
         ctx.fill();
     }
 
+    /**
+     * 获取颜色渐变
+     */
     _getColorPaint() {
         let gradientConfig = this._gradient;
         let paletteCanvas = document.createElement('canvas');

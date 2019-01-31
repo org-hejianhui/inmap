@@ -138,6 +138,13 @@ export function encodeHTML(source) {
         .replace(/'/g, '&#39;');
 }
 
+/**
+ * 判断是否被包含
+ * @param {*} lng 
+ * @param {*} lat 
+ * @param {*} pointLat 
+ * @param {*} pointLng 
+ */
 export function isPolyContains(lng, lat, pointLat, pointLng) {
     let ret = false;
     let latMin = 90.0;
@@ -161,6 +168,7 @@ export function isPolyContains(lng, lat, pointLat, pointLng) {
     }
     return ret;
 }
+
 /**
  * 判断pont点是否在围栏内
  * @param {*} lng 经度 

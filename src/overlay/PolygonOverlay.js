@@ -49,17 +49,34 @@ export default class PolygonOverlay extends Parameter {
         this._setlegend(this._legendConfig, this._styleConfig.splitList);
     }
 
-	
+	/**
+     * 设置缩放比例
+     * @param {Number} zoom 缩放比例
+     */
     setCustomZoom(zoom) {
         this._customZoom = zoom;
         this._drawMap();
     }
+
+    /**
+     * 清空选中数据项
+     */
     _clearSelectedList() {
         clearPushArray(this._selectItem);
     }
+
+    /**
+     * 获取选中的数据项
+     */
     _getSelectedList() {
         return this._selectItem;
     }
+
+    /**
+     * 数据偏移转化
+     * @param {*} distanceX X轴偏移
+     * @param {*} distanceY Y轴偏移
+     */
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._workerData.length; i++) {
             let geometry = this._workerData[i].geometry;
@@ -100,19 +117,38 @@ export default class PolygonOverlay extends Parameter {
         }
         this.refresh();
     }
+
+    /**
+     * 设置选中数据
+     * @param {Object} ops 选择数据项
+     */
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
+
+    /**
+     * 设置绘制状态
+     * @param {*} val 
+     */
     _setState(val) {
         this._state = val;
         this._eventConfig.onState.call(this, this._state);
     }
+
+    /**
+     * 样式发生变化会触发
+     */
     _onOptionChange() {
         this._map && this._initLegend();
     }
+
+    /**
+     * 样式发生变化会触发
+     */
     _onDataChange() {
         this._map && this._initLegend();
     }
+
     /**
      * 颜色等分策略
      * @param {} data 
@@ -163,6 +199,10 @@ export default class PolygonOverlay extends Parameter {
         }
         this._styleConfig.splitList = result;
     }
+
+    /**
+     * 颜色修补策略
+     */
     _patchSplitList() {
         let normal = this._styleConfig.normal;
         if (normal.borderWidth != null && normal.borderColor == null) {
@@ -177,9 +217,18 @@ export default class PolygonOverlay extends Parameter {
         }
 
     }
+
+    /**
+     * 绘制当前图层
+     */
     _toDraw() {
         this._drawMap();
     }
+
+    /**
+     * 获取geometry几何对象中心点
+     * @param {Object} geo geometry几何对象
+     */
     _getGeoCenter(geo) {
         let minX = geo[0][0];
         let minY = geo[0][1];
@@ -193,6 +242,11 @@ export default class PolygonOverlay extends Parameter {
         }
         return [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
     }
+
+    /**
+     * 获取geometry几何对象两点最大距离
+     * @param {Object} geo geometry几何对象
+     */
     _getMaxWidth(geo) {
         let minX = geo[0][0];
         let minY = geo[0][1];
@@ -207,6 +261,10 @@ export default class PolygonOverlay extends Parameter {
         return maxX - minX;
     }
 
+    /**
+     * 查询选中列表的索引
+     * @param {*} item 
+     */
     _findIndexSelectItem(item) {
         let index = -1;
         if (item) {
@@ -216,6 +274,10 @@ export default class PolygonOverlay extends Parameter {
         }
         return index;
     }
+
+    /**
+     * 刷新当前图层
+     */
     refresh() {
 
         this._setState(State.drawBefore);
@@ -223,6 +285,10 @@ export default class PolygonOverlay extends Parameter {
         this._drawPolygon(this.getRenderData());
         this._setState(State.drawAfter);
     }
+
+    /**
+     * 绘制当前图层画布
+     */
     _drawMap() {
         this._setState(State.computeBefore);
         let parameter = {
@@ -242,6 +308,11 @@ export default class PolygonOverlay extends Parameter {
         });
     }
 
+    /**
+     * 根据鼠标像素坐标获取数据项
+     * @param {*} x 
+     * @param {*} y 
+     */
     _getTarget(x, y) {
         let data = this.getRenderData();
         for (let i = 0; i < data.length; i++) {
@@ -277,6 +348,11 @@ export default class PolygonOverlay extends Parameter {
             item: null
         };
     }
+
+    /**
+     * 绘制当前图层数据
+     * @param {Object} pixelItem 数据集
+     */
     _drawData(pixelItem) {
         if (pixelItem.length == 0)
             return;
@@ -290,6 +366,13 @@ export default class PolygonOverlay extends Parameter {
             }
         }
     }
+
+    /**
+     * 判断坐标点是否在当前数据画布内
+     * @param {*} x 
+     * @param {*} y 
+     * @param {*} pixels 
+     */
     _containPolygon(x, y, pixels) {
         let outerRace = false;
         for (let j = 0; j < pixels.length; j++) {
@@ -316,29 +399,40 @@ export default class PolygonOverlay extends Parameter {
         }
         return outerRace;
     }
+
+    /**
+     * 绘制几何画布
+     * @param {*} pixels 数据集
+     * @param {*} style 画布样式
+     */
     _drawPath(pixels, style) {
 
         for (let j = 0; j < pixels.length; j++) {
-            this._ctx.save();
-            this._ctx.beginPath();
+            this._ctx.save();   // 保存当前环境的状态
+            this._ctx.beginPath();  // 起始一条路径，或重置当前路径
             let pixelItem = pixels[j];
             if (j == 0) {
                 this._drawData(pixelItem);
-                this._ctx.closePath();
-                this._ctx.fill();
+                this._ctx.closePath();  // 创建从当前点回到起始点的路径
+                this._ctx.fill();   // 填充当前绘图（路径）
             } else {
                 this._drawData(pixelItem);
-                this._ctx.clip();
+                this._ctx.clip();   // 从原始画布剪切任意形状和尺寸的区域
                 this._clearCanvas();
             }
-            this._ctx.strokeStyle = style.borderColor;
-            this._ctx.lineWidth = style.borderWidth;
-            this._ctx.stroke();
-            this._ctx.restore();
+            this._ctx.strokeStyle = style.borderColor;  // 设置或返回用于笔触的颜色、渐变或模式
+            this._ctx.lineWidth = style.borderWidth;    // 置或返回当前的线条宽度
+            this._ctx.stroke(); // 绘制已定义的路径
+            this._ctx.restore();    // 返回之前保存过的路径状态和属性
             pixelItem = null;
 
         }
     }
+
+    /**
+     * 绘制面几何对象
+     * @param {Object} data 数据集
+     */
     _drawPolygon(data) {
         this._ctx.lineCap = 'round';
         this._ctx.lineJoin = 'round';

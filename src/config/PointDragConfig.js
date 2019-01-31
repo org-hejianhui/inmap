@@ -1,7 +1,10 @@
- /**
-  * 默认散点、围栏参数结构
-  */
-
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.31
+ * Version: 0.0.1
+ * Description: 点拖拽绘制配置类
+ */
  export default {
     tooltip: {
         show: false,

@@ -77,8 +77,8 @@ export default class PointOverlay extends Parameter {
     }
 
     /**
-     * 设置配置项
-     * @param {Object} ops 
+     * 设置选中数据
+     * @param {Object} ops 选择数据项
      */
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
@@ -99,7 +99,7 @@ export default class PointOverlay extends Parameter {
     }
 
     /**
-     * 绘制图层
+     * 绘制当前图层
      */
     _toDraw() {
         this._drawMap();
@@ -319,7 +319,7 @@ export default class PointOverlay extends Parameter {
         };
     }
     
-     /**
+    /**
      * 查询选中列表的索引
      * @param {*} item 
      */

@@ -1,3 +1,10 @@
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.31
+ * Version: 0.0.1
+ * Description: 线路的动画图层配置类
+ */
 export default {
     style: { 
         //移动点半径

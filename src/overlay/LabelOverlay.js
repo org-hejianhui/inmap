@@ -10,6 +10,11 @@ import Config from '../config/LabelConfig'; // 文字图层组件配置类
 import State from './../config/OnStateConfig';  // 状态类
 
 export default class LabelOverlay extends Parameter {
+    
+    /**
+	 * 构造函数
+	 * @param {Object} opts 配置项
+	 */
     constructor(opts) {
         super(Config, opts);
         this._state = null;
@@ -38,8 +43,8 @@ export default class LabelOverlay extends Parameter {
     }
 
     /**
-     * 设置状态
-     * @param {*} val 
+     * 设置图层绘制状态
+     * @param {Number} val 状态值
      */
     _setState(val) {
         this._state = val;

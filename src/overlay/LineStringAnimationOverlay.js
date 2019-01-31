@@ -1,21 +1,48 @@
-import CanvasOverlay from './base/CanvasOverlay.js';
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.31
+ * Version: 0.0.1
+ * Description: 线路的动画图层,一般不单独使用，跟LineStringOverlay 图层一块使用
+ */
+import CanvasOverlay from './base/CanvasOverlay.js';    // 图层绘制类
 import {
-    merge,
-    clearPushArray,
-    checkGeoJSON
+    merge,  // 数组合并
+    clearPushArray, // 清空数组并添加新内容
+    checkGeoJSON    // GeoJSON 格式校验
 } from '../common/Util.js';
 
-import LineStringAnimationConfig from './../config/LineStringAnimationConfig';
+import LineStringAnimationConfig from './../config/LineStringAnimationConfig';  // 线路的动画图层配置类
+
+/**
+ * 标记线
+ */
 class MarkLine {
+
+    /**
+	 * 构造函数
+	 * @param {Object} opts 配置项
+	 */
     constructor(opts) {
         this.path = opts.path;
         this.step = 0;
     }
+
+    /**
+     * 绘制Marker标记
+     * @param {*} context 
+     * @param {*} map 
+     */
     drawMarker(context, map) {
         this.from.draw(context, map);
         this.to.draw(context, map);
     }
 
+    /**
+     * 绘制线
+     * @param {*} context 
+     * @param {*} styleConfig 
+     */
     drawLinePath(context, styleConfig) {
         let pointList = this.path;
         let len = pointList.length;
@@ -38,6 +65,12 @@ class MarkLine {
         context.stroke();
         context.restore();
     }
+
+    /**
+     * 绘制移动的圆点
+     * @param {*} context 
+     * @param {*} styleConfig 
+     */
     drawMoveCircle(context, styleConfig) {
         let pointList = this.path;
         if (pointList.length <= 0) return;
@@ -57,7 +90,15 @@ class MarkLine {
     }
 }
 
+/**
+ * 线路的动画图层
+ */
 export default class LineStringAnimationOverlay extends CanvasOverlay {
+
+    /**
+	 * 构造函数
+	 * @param {Object} opts 配置项
+	 */
     constructor(ops) {
         super(ops);
         this._data = [];
@@ -65,10 +106,21 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
         this._markLineData = [];
         this._setStyle(LineStringAnimationConfig, ops);
     }
+
+    /**
+     * 设置当前样式，会造成画布重绘
+     * @param {Object} ops 数据集
+     */
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
         this._map && this._drawMap();
     }
+
+    /**
+     * 设置样式
+     * @param {Object} config 默认配置项
+     * @param {Object} ops 参数配置项
+     */
     _setStyle(config, ops) {
         ops = ops || {};
         let option = this._option = merge(config, ops);
@@ -85,6 +137,12 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
         }
 
     }
+
+    /**
+     * 数据偏移转化
+     * @param {*} distanceX X轴偏移
+     * @param {*} distanceY Y轴偏移
+     */
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._markLineData.length; i++) {
             let pixels = this._markLineData[i].path;
@@ -96,6 +154,11 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
         }
         this.refresh();
     }
+
+    /**
+     * 设置当前图层的数据
+     * @param {Object} points 数据集
+     */
     setData(points) {
         if (points) {
             this._data = points;
@@ -106,15 +169,27 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
         clearPushArray(this._workerData);
         this._map && this._drawMap();
     }
+
+    /**
+     * 绘制当前图层
+     */
     _toDraw() {
         if (!this.animationDraw) {
             this._initAnimation();
         }
         this._drawMap();
     }
+
+    /**
+     * 获取转换后数据
+     */
     _getTransformData() {
         return this._workerData.length > 0 ? this._workerData : this._data;
     }
+
+    /**
+     * 重新绘制当前图层画布
+     */
     _drawMap() {
         let zoomUnit = Math.pow(2, 18 - this._map.getZoom());
         let projection = this._map.getMapType().getProjection();
@@ -144,6 +219,11 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
             margin = null;
         });
     }
+
+    /**
+     * 创建标记线
+     * @param {Object} data 数据项
+     */
     _createMarkLine(data) {
         clearPushArray(this._markLineData);
         for (let i = 0; i < data.length; i++) {
@@ -153,6 +233,10 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
             }));
         }
     }
+
+    /**
+     * 初始化动画效果
+     */
     _initAnimation() {
         let now;
         let then = Date.now();
@@ -173,6 +257,10 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
         this.animationDraw();
 
     }
+
+    /**
+     * 刷新当前图层
+     */
     refresh() {
         let {
             _markLineData,

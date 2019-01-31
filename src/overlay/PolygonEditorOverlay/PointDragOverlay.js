@@ -1,16 +1,27 @@
-/*
- * 点的绘制
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.31
+ * Version: 0.0.1
+ * Description: 点拖拽绘制图层
  */
-import CanvasOverlay from '../base/CanvasOverlay.js';
-import Parameter from '../base/Parameter.js';
+import CanvasOverlay from '../base/CanvasOverlay.js';   // 图层绘制类
+import Parameter from '../base/Parameter.js';   // 接口定义，参数解析类
 import {
-    isEmpty
+    isEmpty // 是否为空
 } from '../../common/Util.js';
 
 import PointDragConfig from '../../config/PointDragConfig.js';
 
-
+/*
+ * 点的绘制
+ */
 export default class PointOverlay extends Parameter {
+    
+    /**
+	 * 构造函数
+	 * @param {Object} opts 配置项
+	 */
     constructor(opts) {
         super(PointDragConfig, opts);
         this._loopDraw = this._loopDraw.bind(this);
@@ -29,18 +40,34 @@ export default class PointOverlay extends Parameter {
 
     }
 
+    /**
+     * 样式改变时发生
+     */
     _onOptionChange() {
 
     }
+
+    /**
+     * 数据改变时发生
+     */
+    _onDataChangee() {
+
+    }
+    
+    /**
+     * 设置当前的图层的z-index值。注意：被and添加之后才能调用生效,zcmap默认是按照添加图层的顺序设置层级的
+     * @param {Number} zIndex 索引值
+     */
     setZIndex(zIndex) {
         this._zIndex = zIndex;
         if (this._container) this._container.style.zIndex = this._zIndex;
 
         this._mouseLayer.setZIndex(this._zIndex + 1);
     }
-    _onDataChangee() {
-
-    }
+   
+    /**
+     * 参数初始化
+     */
     _parameterInit() {
         this._map.addOverlay(this._mouseLayer);
         this._map.addEventListener('mouseup', this._mouseupFun);
@@ -49,25 +76,43 @@ export default class PointOverlay extends Parameter {
 
     }
 
+    /**
+     * 设置当前样式，会造成画布重绘
+     * @param {Object} ops 数据集
+     */
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
+
+    /**
+     * 绘制当前图层
+     */
     _toDraw() {
 
     }
 
+    /**
+     * 绘制当前图层
+     */
     _drawMouseLayer() {
         let overArr = this._overItem ? [this._overItem] : [];
         this._mouseLayer._clearCanvas();
         this._loopDraw(this._mouseLayer._getContext(), this._selectItem.concat(overArr), true);
 
     }
+
+    /**
+     * 清空所有
+     */
     _clearAll() {
         this._overItem = null;
         this._mouseLayer._clearCanvas();
         this._clearCanvas();
     }
 
+    /**
+     * 更新图层数据项
+     */
     _updateOverClickItem() {
         let overArr = this._overItem ? [this._overItem] : [];
         let allItems = this._selectItem.concat(overArr);
@@ -83,6 +128,11 @@ export default class PointOverlay extends Parameter {
         }
     }
 
+     /**
+     * 根据鼠标像素坐标获取数据项
+     * @param {*} x 
+     * @param {*} y 
+     */
     _getTarget(mouseX, mouseY) {
         let pixels = this._workerData,
             ctx = this._ctx;
@@ -112,6 +162,11 @@ export default class PointOverlay extends Parameter {
             item: null
         };
     }
+
+    /**
+     * 查询选中列表的索引
+     * @param {*} item 
+     */
     _findIndexSelectItem(item) {
         let index = -1;
         if (item) {
@@ -123,6 +178,10 @@ export default class PointOverlay extends Parameter {
         }
         return index;
     }
+
+    /**
+     * 刷新当前图层
+     */
     refresh() {
 
         this._clearCanvas();
@@ -131,12 +190,25 @@ export default class PointOverlay extends Parameter {
         this._drawMouseLayer();
 
     }
+
+    /**
+     * 数据交换
+     * @param {*} index 
+     * @param {*} item 
+     */
     _swopData(index, item) {
         if (index > -1) { //导致文字闪
             this._workerData[index] = this._workerData[this._workerData.length - 1];
             this._workerData[this._workerData.length - 1] = item;
         }
     }
+
+    /**
+     * 重新绘制
+     * @param {*} ctx 
+     * @param {*} pixels 
+     * @param {*} otherMode 
+     */
     _loopDraw(ctx, pixels, otherMode) {
         let mapSize = this._map.getSize();
         let pre = null;
@@ -170,6 +242,16 @@ export default class PointOverlay extends Parameter {
         }
     }
 
+    /**
+     * 绘制标记点
+     * @param {*} ctx 
+     * @param {*} x 
+     * @param {*} y 
+     * @param {*} radius 
+     * @param {*} color 
+     * @param {*} lineWidth 
+     * @param {*} strokeStyle 
+     */
     _drawCircle(ctx, x, y, radius, color, lineWidth, strokeStyle) {
         ctx.beginPath();
         ctx.fillStyle = color;
@@ -183,17 +265,30 @@ export default class PointOverlay extends Parameter {
             ctx.stroke();
         }
     }
+
+    /**
+     * 清除鼠标移动事件
+     */
     _removeMoveEvent() {
         this._map.removeEventListener('mouseup', this._mouseupFun);
         this._map.removeEventListener('mousedown', this._mousedownFun);
         this._map.removeEventListener('dblclick', this._dblclickFun);
 
     }
+
+    /**
+     * 释放对象
+     */
     _Tdispose() {
         this._removeMoveEvent();
         this._map.removeOverlay(this._mouseLayer);
         this._mouseLayer.dispose();
     }
+
+    /**
+     * 鼠标移动事件
+     * @param {*} event 
+     */
     _tMousemove(event) {
         if (this._isDragging) {
             let point = this._selectItem[0];
@@ -231,6 +326,11 @@ export default class PointOverlay extends Parameter {
 
 
     }
+
+    /**
+     * 当按下鼠标按钮时
+     * @param {*} event 
+     */
     _mousedownFun(event) {
         if (this._eventType == 'onmoving') return;
         let result = this._getTarget(event.pixel.x, event.pixel.y);
@@ -252,6 +352,11 @@ export default class PointOverlay extends Parameter {
         this._selectItem = [result.item];
         this._drawMouseLayer();
     }
+
+    /**
+     * 当松开鼠标按钮时
+     * @param {*} event 
+     */
     _mouseupFun(event) {
 
         if (this._isDragging) {
@@ -274,12 +379,21 @@ export default class PointOverlay extends Parameter {
         this._isDragging = false;
 
     }
+
+    /**
+     * 鼠标双击事件
+     * @param {*} event 
+     */
     _dblclickFun(event) {
         if (this._selectItemIndex > -1) {
             this._eventConfig.onDblclick.call(this, this._selectItem[0], this._selectItemIndex, event);
         }
 
     }
+
+    /**
+     * 鼠标单击事件
+     */
     _tMouseClick() {
 
     }

@@ -1,13 +1,24 @@
-import CanvasOverlay from './base/CanvasOverlay';
-import MaskConfig from '../config/MaskConfig';
-import State from '../config/OnStateConfig.js';
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.30
+ * Version: 0.0.1
+ * Description: 多边形图形遮罩
+ */
+import CanvasOverlay from './base/CanvasOverlay';   // 图层绘制类
+import MaskConfig from '../config/MaskConfig';  // 多边形图形遮罩配置类
+import State from '../config/OnStateConfig.js'; // 图层绘制状态
 import {
-    clearPushArray,
-    checkGeoJSON,
-    merge
+    clearPushArray, // 清空数组并添加新内容
+    checkGeoJSON,   // GeoJSON 格式校验
+    merge   // 数组合并
 } from '../common/Util';
 
 export default class MaskOverlay extends CanvasOverlay {
+    /**
+	 * 构造函数
+	 * @param {Object} opts 配置项
+	 */
     constructor(ops) {
         super();
         this._data = [];
@@ -15,6 +26,12 @@ export default class MaskOverlay extends CanvasOverlay {
         this._option = {};
         this._setStyle(MaskConfig, ops);
     }
+
+    /**
+     * 设置样式
+     * @param {Object} config 默认配置项
+     * @param {Object} ops 参数配置项
+     */
     _setStyle(config, ops) {
         ops = ops || {};
         let option = merge(config, ops);
@@ -29,9 +46,19 @@ export default class MaskOverlay extends CanvasOverlay {
         delete this._option.data;
         this._tMapStyle(option.skin);
     }
+
+    /**
+     * 设置当前样式，会造成画布重绘.
+     * @param {Object} ops 配置项
+     */
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
+
+    /**
+     * 设置当前图层的数据
+     * @param {Object} points 数据集
+     */
     setData(points) {
         if (points) {
             checkGeoJSON(points, false, false);
@@ -43,15 +70,31 @@ export default class MaskOverlay extends CanvasOverlay {
         this._clearData();
         this._map && this._drawMap();
     }
+
+    /**
+     * 获取渲染的数据集
+     */
     getRenderData() {
         return this._workerData;
     }
+
+    /**
+     * 清空数据
+     */
     _clearData() {
         clearPushArray(this._workerData);
     }
+
+    /**
+     * 绘制当前图层
+     */
     _toDraw() {
         this._drawMap();
     }
+
+    /**
+     * 绘制当前图层画布
+     */
     _drawMap() {
         this._setState(State.computeBefore);
         let parameter = {
@@ -70,13 +113,27 @@ export default class MaskOverlay extends CanvasOverlay {
         });
     }
 
+    /**
+     * 设置数据项
+     * @param {Array} val 数据项
+     */
     _setWorkerData(val) {
         this._data = [];
         clearPushArray(this._workerData, val);
     }
+
+    /**
+     * 获取转换后数据
+     */
     _getTransformData() {
         return this._workerData.length > 0 ? this._workerData : this._data;
     }
+
+    /**
+     * 数据偏移转化
+     * @param {*} distanceX X轴偏移
+     * @param {*} distanceY Y轴偏移
+     */
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._workerData.length; i++) {
             let geometry = this._workerData[i].geometry;
@@ -107,10 +164,19 @@ export default class MaskOverlay extends CanvasOverlay {
         }
         this.refresh();
     }
+
+    /**
+     * 设置画布绘制状态
+     * @param {Number} val 状态
+     */
     _setState(val) {
         this._state = val;
         this._eventConfig.onState.call(this, this._state);
     }
+
+    /**
+     * 刷新当前图层
+     */
     refresh() {
 
         this._setState(State.drawBefore);
@@ -118,6 +184,12 @@ export default class MaskOverlay extends CanvasOverlay {
         this._drawPolygon(this.getRenderData());
         this._setState(State.drawAfter);
     }
+
+    /**
+     * 绘制线
+     * @param {Object} pixels 
+     * @param {Object} style 
+     */
     _drawLine(pixels, style) {
         for (let j = 0; j < pixels.length; j++) {
             if (j == 0) {
@@ -139,6 +211,11 @@ export default class MaskOverlay extends CanvasOverlay {
             }
         }
     }
+
+    /**
+     * 绘制面
+     * @param {Object} data 数据集
+     */
     _drawPolygon(data) {
         let style = this._styleConfig;
         this._ctx.lineCap = 'round';
@@ -169,6 +246,11 @@ export default class MaskOverlay extends CanvasOverlay {
         }
         this._ctx.closePath();
     }
+
+    /**
+     * 绘制当前图层数据
+     * @param {Object} pixelItem 数据集
+     */
     _drawData(pixelItem) {
         if (pixelItem.length == 0)
             return;

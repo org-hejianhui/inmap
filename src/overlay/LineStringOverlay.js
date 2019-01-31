@@ -1,14 +1,27 @@
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.31
+ * Version: 0.0.1
+ * Description: 线路的绘画，支持LineString、MultiLineString两种数据格式，支持颜色渐变
+ */
 import {
-    isEmpty,
-    detectmob,
-    clearPushArray
+    isEmpty,    // 是否为空
+    detectmob,  // 检查设备类型
+    clearPushArray  // 清空数组并添加新内容
 } from '../common/Util';
-import CanvasOverlay from './base/CanvasOverlay.js';
-import Parameter from './base/Parameter';
-import LineStringConfig from '../config/LineStringConfig';
-import State from './../config/OnStateConfig';
-let isMobile = detectmob();
+import CanvasOverlay from './base/CanvasOverlay.js';    // 图层绘制类
+import Parameter from './base/Parameter';   // 接口定义，参数解析类
+import LineStringConfig from '../config/LineStringConfig';  // 线路的绘画配置类
+import State from './../config/OnStateConfig';  // 图层绘制状态类
+let isMobile = detectmob(); // 是否是移动设备
+
 export default class LineStringOverlay extends Parameter {
+    
+    /**
+	 * 构造函数
+	 * @param {Object} opts 配置项
+	 */
     constructor(ops) {
         super(LineStringConfig, ops);
         this._state = null;
@@ -18,15 +31,29 @@ export default class LineStringOverlay extends Parameter {
         this._selectItemIndex = -1;
         this._onDataChange();
     }
+
+    /**
+     * 设置当前样式，会造成画布重绘
+     * @param {Object} ops 数据集
+     */
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
+
+    /**
+     * 设置当前的图层的z-index值。注意：被and添加之后才能调用生效,inmap默认是按照添加图层的顺序设置层级的
+     * @param {Nubmer} zIndex 图层索引
+     */
     setZIndex(zIndex) {
         this._zIndex = zIndex;
         if (this._container) this._container.style.zIndex = this._zIndex;
 
         this._mouseLayer.setZIndex(this._zIndex + 1);
     }
+
+    /**
+     * 数据发生变化会触发
+     */
     _onDataChange() {
         this._selectItemIndex = -1;
         if (this._selectItem.length > 0) {
@@ -37,23 +64,46 @@ export default class LineStringOverlay extends Parameter {
 
     }
 
+    /**
+     * 参数初始化
+     */
     _parameterInit() {
         this._map.addOverlay(this._mouseLayer);
     }
+
+    /**
+     * 绘制图层
+     */
     _drawMouseLayer() {
         let overArr = this._overItem ? [this._overItem] : [];
 
         this._mouseLayer._clearCanvas();
         this._drawLine(this._mouseLayer._getContext(), this._selectItem.concat(overArr), true);
     }
+
+    /**
+     * 清空所有
+     */
     _clearAll() {
         this._mouseLayer._clearCanvas();
         this._clearCanvas();
     }
+
+
+    /**
+     * 设置图层绘制状态
+     * @param {Number} val 状态值
+     */
     _setState(val) {
         this._state = val;
         this._eventConfig.onState.call(this, this._state);
     }
+
+    /**
+     * 数据偏移转化
+     * @param {*} distanceX X轴偏移
+     * @param {*} distanceY Y轴偏移
+     */
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._workerData.length; i++) {
             let pixels = this._workerData[i].geometry.pixels;
@@ -65,6 +115,12 @@ export default class LineStringOverlay extends Parameter {
         }
         this.refresh();
     }
+
+    /**
+     * 根据鼠标像素坐标获取数据项
+     * @param {*} x 
+     * @param {*} y 
+     */
     _getTarget(mouseX, mouseY) {
 
         for (let i = 0, len = this._workerData.length; i < len; i++) {
@@ -87,6 +143,11 @@ export default class LineStringOverlay extends Parameter {
             item: null
         };
     }
+
+    /**
+     * 查询选中列表的索引
+     * @param {*} item 
+     */
     _findIndexSelectItem(item) {
         let index = -1;
         if (item) {
@@ -97,6 +158,14 @@ export default class LineStringOverlay extends Parameter {
         return index;
     }
 
+    /**
+     * 计算像素坐标是否在线范围内
+     * @param {*} line1 
+     * @param {*} line2 
+     * @param {*} mouseX 
+     * @param {*} mouseY 
+     * @param {*} lineThickness 
+     */
     _calcIsInsideThickLineSegment(line1, line2, mouseX, mouseY, lineThickness) {
         let L2 = (((line2[0] - line1[0]) * (line2[0] - line1[0])) + ((line2[1] - line1[1]) * (line2[1] - line1[1])));
         if (L2 == 0) return false;
@@ -111,6 +180,9 @@ export default class LineStringOverlay extends Parameter {
         }
     }
 
+    /**
+     * 刷新当前图层
+     */
     refresh() {
         this._setState(State.drawBefore);
         this._mouseLayer._canvasResize();
@@ -120,6 +192,10 @@ export default class LineStringOverlay extends Parameter {
         this._drawMouseLayer();
         this._setState(State.drawAfter);
     }
+
+    /**
+     * 重新获取选中数据项
+     */
     _anewSelectItem() {
         if (this._selectItemIndex > -1) {
             this._selectItem = [this._workerData[this._selectItemIndex]];
@@ -127,12 +203,25 @@ export default class LineStringOverlay extends Parameter {
             this._selectItem = [];
         }
     }
+
+    /**
+     * 绘制当前图层
+     */
     _toDraw() {
         this._drawMap();
     }
+
+
+    /**
+     * 获取转换后数据
+     */
     _getTransformData() {
         return this._workerData.length > 0 ? this._workerData : this._data;
     }
+
+    /**
+     * 重新绘制当前图层画布
+     */
     _drawMap() {
         this._clearAll();
         let zoomUnit = Math.pow(2, 18 - this._map.getZoom());
@@ -159,8 +248,9 @@ export default class LineStringOverlay extends Parameter {
             margin = null;
         });
     }
+
     /**
-     * 
+     * 绘制线
      * @param {*} ctx 上下文
      * @param {*} data 数据集
      * @param {*} otherMode 是否绘画选中数据样式
@@ -199,10 +289,19 @@ export default class LineStringOverlay extends Parameter {
 
 
     }
+
+    /**
+     * 对象释放
+     */
     _Tdispose() {
         this._map.removeOverlay(this._mouseLayer);
         this._mouseLayer.dispose();
     }
+
+    /**
+     * 鼠标移动离开事件
+     * @param {*} event 
+     */
     _tMousemove(event) {
         if (this._eventTypee == 'onmoving') {
             return;
@@ -229,6 +328,11 @@ export default class LineStringOverlay extends Parameter {
         this._setTooltip(event);
 
     }
+
+    /**
+     * 鼠标点击事件
+     * @param {*} event 
+     */
     _tMouseClick(event) {
         if (this._eventTypee == 'onmoving') return;
         let result = this._getTarget(event.pixel.x, event.pixel.y);

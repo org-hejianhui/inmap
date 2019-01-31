@@ -1,3 +1,10 @@
+/**
+ * Copyright(C),2019-2029,www.jszcrj.com
+ * Author: org_hejianhui@163.com
+ * Date: 2019.01.31
+ * Version: 0.0.1
+ * Description: 蜂窝聚合配置类
+ */
 export default {
     tooltip: {
         show: true,
