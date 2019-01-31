@@ -206,7 +206,7 @@ export default class Parameter extends CanvasOverlay {
         let splitList = this._styleConfig.splitList,
             len = splitList.length;
         if (len > 0 && typeOf(count) !== 'number') {
-            throw new TypeError(`inMap: data index Line ${i}, The property count must be of type Number! about geoJSON, visit http://inmap.talkingdata.com/#/docs/v2/Geojson`);
+            throw new TypeError(`zcmap: data index Line ${i}, The property count must be of type Number! about geoJSON, visit http://zcmap.talkingdata.com/#/docs/v2/Geojson`);
         }
 
         for (let i = 0; i < len; i++) {

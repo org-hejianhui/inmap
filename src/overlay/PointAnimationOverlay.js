@@ -117,7 +117,7 @@ export default class PointAnimationOverlay extends CanvasOverlay {
     setData(points) {
         if (points) {
             if (!isArray(points)) {
-                throw new TypeError('inMap: data must be a Array');
+                throw new TypeError('zcmap: data must be a Array');
             }
             this._data = points;
         } else {

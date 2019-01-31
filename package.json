@@ -1,28 +1,28 @@
 {
-  "name": "inmap",
-  "version": "2.2.3",
-  "description": "Map visualization",
-  "main": "dist/inmap.min.js",
+  "name": "zcmap",
+  "version": "0.0.1",
+  "description": "zcMap visualization",
+  "main": "dist/zcmap.min.js",
   "scripts": {
     "start": "node openServer.js",
-    "dev": "webpack --watch --config  webpack.inmap.js & npm run start",
-    "build-inmap": "webpack --config webpack.inmap.js && node build-worker",
-    "build-inmap-min": "webpack --config webpack.inmap.pro.js && set NODE_ENV=compress node build-worker",
-    "build": "npm run build-inmap-min && npm run build-inmap",
+    "dev": "webpack --watch --config  webpack.zcmap.js & npm run start",
+    "build-zcmap": "webpack --config webpack.zcmap.js && node build-worker",
+    "build-zcmap-min": "webpack --config webpack.zcmap.pro.js && set NODE_ENV=compress node build-worker",
+    "build": "npm run build-zcmap-min && npm run build-zcmap",
     "lint": "eslint --fix --ext .js src",
     "test": "npm run lint",
-    "karma": "npm run lint && karma start karma.inmap.test.js",
+    "karma": "npm run lint && karma start karma.zcmap.test.js",
     "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TalkingData/inmap.git"
+    "url": "git+https://github.com/org-hejianhui/inmap.git"
   },
   "keywords": [
     "Map",
     "visualization"
   ],
-  "author": "TalkingData",
+  "author": "org_hejianhui@163.com",
   "license": "Apache-2.0",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
@@ -71,9 +71,9 @@
     "npm": ">= 3.0.0"
   },
   "bugs": {
-    "url": "https://github.com/TalkingData/inmap/issues"
+    "url": "https://github.com/TalkingData/zcmap/issues"
   },
-  "homepage": "https://github.com/TalkingData/inmap#readme",
+  "homepage": "https://github.com/TalkingData/zcmap#readme",
   "directories": {
     "example": "examples",
     "test": "test"

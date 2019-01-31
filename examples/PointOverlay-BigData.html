@@ -26,7 +26,7 @@
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="data/bigdata.js"></script>
-    <script src="../dist/inmap.js"></script>
+    <script src="../dist/zcmap.js"></script>
 
 </head>
 
@@ -36,7 +36,7 @@
 
 </html>
 <script>
-    var inmap = new inMap.Map({
+    var map = new zcmap.Map({
         id: 'allmap',
         skin: "Blueness",
         center: [116.579477, 40.131411],
@@ -48,7 +48,7 @@
         },
     });
     data = JSON.parse(JSON.stringify(data.concat(data).concat(data).concat(data)));
-    var overlay = new inMap.PointOverlay({
+    var overlay = new zcmap.PointOverlay({
         draw: {
             // interval: 400,
             splitCount: 1900
@@ -74,5 +74,5 @@
             }
         }
     });
-    inmap.add(overlay);
+    map.add(overlay);
 </script>

@@ -4,9 +4,9 @@ let workerPath = './dist/worker.min.js';
 let outputPath = '';
 
 if (process.env.NODE_ENV == 'compress') {
-    outputPath = './dist/inmap.min.js';
+    outputPath = './dist/zcmap.min.js';
 } else {
-    outputPath = './dist/inmap.js';
+    outputPath = './dist/zcmap.js';
 }
 
 let workerContent = fs.readFileSync(path.join(__dirname, workerPath), 'utf-8');

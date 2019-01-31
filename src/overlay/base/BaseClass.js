@@ -9,7 +9,7 @@
 import WorkerMrg from '../../common/WorkerMrg';
 
 let baseClassCounter = 0;
-let inmap_instances = {};
+let zcmap_instances = {};
 let _count = 0; //消息ID key
 /**
  * 父类继承
@@ -41,7 +41,7 @@ Function.prototype.inherits = function (parentClass, className) {
  * @name BaseClass
  */
 let BaseClass = function (hc) {
-    inmap_instances[(this.hashCode = (hc || BaseClass.guid()))] = this;
+    zcmap_instances[(this.hashCode = (hc || BaseClass.guid()))] = this;
 };
 
 /** @ignore */
@@ -59,7 +59,7 @@ BaseClass.guid = function () {
  */
 BaseClass.prototype.dispose = function () {
     if (this.hashCode) {
-        inmap_instances[this.hashCode] = null;
+        zcmap_instances[this.hashCode] = null;
     }
 
     for (let i in this) {
@@ -75,17 +75,17 @@ BaseClass.prototype.dispose = function () {
  */
 BaseClass.prototype._getHashCode = function () {
     if (!this.hashCode) {
-        inmap_instances[(this.hashCode = BaseClass.guid())] = this;
+        zcmap_instances[(this.hashCode = BaseClass.guid())] = this;
     }
     return this.hashCode;
 };
 
 /**
- * 从inmap_instances数组中将对象的引用删除掉。
+ * 从zcmap_instances数组中将对象的引用删除掉。
  * 删除之后就无法使用I()函数获取对象了。
  */
 BaseClass.prototype._decontrol = function () {
-    inmap_instances[this.hashCode] = null;
+    zcmap_instances[this.hashCode] = null;
 };
 
 let baidu = window.BMap || {

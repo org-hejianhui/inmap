@@ -29,7 +29,7 @@
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="./data/geojson.js"></script>
-    <script src="../dist/inmap.js"></script>
+    <script src="../dist/zcmap.js"></script>
     <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
     <link href="https://cdn.bootcss.com/iview/2.12.0/styles/iview.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/iview/2.12.0/iview.min.js"></script>
@@ -49,7 +49,7 @@
     data.forEach(function (item) {
         item.count = Math.random() * 5
     });
-    var inMapVue = new Vue({
+    var mapVue = new Vue({
         el: '#app',
         data: {
             boundarys: [],
@@ -81,7 +81,7 @@
             }, this);
         }
     })
-    var inmap = new inMap.Map({
+    var map = new zcmap.Map({
         id: 'allmap',
         skin: "Blueness",
         center: ["114.16248337214269", "22.559515429553684"],
@@ -91,7 +91,7 @@
             max: 22
         }
     })
-    var overlay = new inMap.PolygonOverlay({
+    var overlay = new zcmap.PolygonOverlay({
         tooltip: {
             show: true,
             // formatter: "{name}+'~<br/>'+{count}",
@@ -166,7 +166,7 @@
             }
         }
     });
-    inmap.add(overlay);
+    map.add(overlay);
     overlay.setData(data);
 </script>
 

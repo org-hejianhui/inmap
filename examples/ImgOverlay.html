@@ -26,7 +26,7 @@
     </style>
 
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
-    <script src="../dist/inmap.js"></script>
+    <script src="../dist/zcmap.js"></script>
     <script src="data/data.js"></script>
 </head>
 
@@ -37,7 +37,7 @@
 </html>
 <script>
     data.length = 5;
-    var map = new inMap.Map({
+    var map = new zcmap.Map({
         id: 'allmap',
         center: [105.403119, 38.028658],
         zoom: {
@@ -52,7 +52,7 @@
     var img = "./img/bso.svg";
     var img2 = "./img/mark (2).png";
 
-    var overlay = new inMap.ImgOverlay({
+    var overlay = new zcmap.ImgOverlay({
         tooltip: {
             show: true,
             // formatter: function (params) {

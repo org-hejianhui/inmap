@@ -26,7 +26,7 @@
     </style>
 
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
-    <script src="../dist/inmap.js"></script>
+    <script src="../dist/zcmap.js"></script>
     <script src="./data/heatData.js"></script>
 </head>
 
@@ -36,7 +36,7 @@
 
 </html>
 <script>
-    var map = new inMap.Map({
+    var map = new zcmap.Map({
         id: document.getElementById('allmap'),
         center: [117.294036, 39.43691],
         zoom: {
@@ -46,7 +46,7 @@
             min: 8
         }
     })
-    var overlay = new inMap.HoneycombOverlay({
+    var overlay = new zcmap.HoneycombOverlay({
         tooltip: {
             show: true,
             // formatter: function (params) {

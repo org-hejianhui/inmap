@@ -26,7 +26,7 @@
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="data/data.js"></script>
-    <script src="../dist/inmap.js"></script>
+    <script src="../dist/zcmap.js"></script>
 
 </head>
 
@@ -36,7 +36,7 @@
 
 </html>
 <script>
-    var inmap = new inMap.Map({
+    var map = new zcmap.Map({
         id: 'allmap',
         skin: "Blueness",
         center: [105.403119, 38.028658],
@@ -49,7 +49,7 @@
     })
 
 
-    var overlay = new inMap.PointOverlay({
+    var overlay = new zcmap.PointOverlay({
         tooltip: {
             show: true,
             formatter: "{count}",
@@ -106,7 +106,7 @@
             // }
         }
     });
-    inmap.add(overlay);
+    map.add(overlay);
 
     setTimeout(() => {
         overlay.setOptionStyle({

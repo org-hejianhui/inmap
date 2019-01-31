@@ -26,7 +26,7 @@
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="data/labelData.js"></script>
-    <script src="../dist/inmap.js"></script>
+    <script src="../dist/zcmap.js"></script>
 </head>
 
 <body>
@@ -35,7 +35,7 @@
 
 </html>
 <script>
-    var inmap = new inMap.Map({
+    var map = new zcmap.Map({
         id: 'allmap',
         skin: "Blueness",
         center: [105.439914, 27.25478],
@@ -47,7 +47,7 @@
         },
     });
 
-    var overlay = new inMap.LabelOverlay({
+    var overlay = new zcmap.LabelOverlay({
         tooltip: {
             show: true,
             formatter: "'打分：'+{count}",
@@ -78,5 +78,5 @@
             }
         }
     });
-    inmap.add(overlay);
+    map.add(overlay);
 </script>

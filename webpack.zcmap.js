@@ -6,13 +6,13 @@ const webpack = require('webpack');
 const version = require('./package.json').version;
 const option = {
   entry: {
-    inmap: './src/main.js',
+    zcmap: './src/main.js',
     worker: './src/worker/index.js'
   },
   output: {
     path: path.join(__dirname, './dist'),
     libraryTarget: 'umd',
-    library: 'inMap',
+    library: 'zcmap',
     umdNamedDefine: true,
     filename: '[name].js'
   },

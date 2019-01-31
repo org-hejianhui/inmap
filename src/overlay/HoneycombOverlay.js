@@ -130,7 +130,7 @@ export default class HoneycombOverlay extends Parameter {
             }
             size = (normal.size / mpp) * zoomUnit;
         } else {
-            throw new TypeError('inMap: style.normal.unit must be is "meters" or "px" .');
+            throw new TypeError('zcmap: style.normal.unit must be is "meters" or "px" .');
         }
 
         let params = {

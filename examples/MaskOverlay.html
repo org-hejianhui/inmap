@@ -26,7 +26,7 @@
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="./data/beiJingGeo.js"></script>
-    <script src="../dist/inmap.js"></script>
+    <script src="../dist/zcmap.js"></script>
 
 </head>
 
@@ -36,8 +36,8 @@
 
 </html>
 <script>
-    inMap.config.devtools = true; //开发模式
-    var inmap = new inMap.Map({
+    zcmap.config.devtools = true; //开发模式
+    var map = new zcmap.Map({
         id: 'allmap',
 
         center: [116.473644, 39.988811],
@@ -48,7 +48,7 @@
         }
     });
 
-    var overlay = new inMap.MaskOverlay({
+    var overlay = new zcmap.MaskOverlay({
         style: {
             backgroundColor: "rgba(31,44,72,1)",
             borderColor: 'rgba(250, 250, 55, 1)',
@@ -63,5 +63,5 @@
             }
         }
     });
-    inmap.add(overlay);
+    map.add(overlay);
 </script>

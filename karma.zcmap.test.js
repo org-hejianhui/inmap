@@ -1,6 +1,6 @@
 // Karma configuration
 // Generated on Tue Mar 06 2018 15:24:56 GMT+0800 (CST)
-const webpackConfig = require('./webpack.inmap.js');
+const webpackConfig = require('./webpack.zcmap.js');
 module.exports = function (config) {
   config.set({
 

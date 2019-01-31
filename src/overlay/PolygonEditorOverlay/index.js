@@ -344,7 +344,7 @@
                  ];
              }
          } catch (error) {
-             throw new TypeError('inMap :data must be is \'MultiPolygon\' or \'Polygon\'');
+             throw new TypeError('zcmap :data must be is \'MultiPolygon\' or \'Polygon\'');
          }
          return data;
 

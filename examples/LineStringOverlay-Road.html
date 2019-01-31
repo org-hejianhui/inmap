@@ -28,7 +28,7 @@
     </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="./data/car.js"></script>
-    <script src="../dist/inmap.js"></script>
+    <script src="../dist/zcmap.js"></script>
 
 </head>
 
@@ -39,7 +39,7 @@
 </html>
 <script>
 
-    var map = new inMap.Map({
+    var map = new zcmap.Map({
         id: 'allmap',
         skin: 'Blueness',
         center: [106.563777, 29.578285],
@@ -50,7 +50,7 @@
         }
     });
   
-    var overlay = new inMap.LineStringOverlay({
+    var overlay = new zcmap.LineStringOverlay({
         style: {
             normal: {
                 globalCompositeOperation: 'lighter',

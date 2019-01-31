@@ -22,8 +22,8 @@ import WorkerMrg from './common/WorkerMrg';
 import config from './config/Config';
 
 let version = VERSION;
-console.log(`inMap v${version}`);
-const inMap = {
+console.log(`zcmap v${version}`);
+const zcmap = {
     version,
     utils,
     Map,
@@ -63,4 +63,4 @@ export {
     MaskOverlay,
     config
 };
-export default inMap;
+export default zcmap;

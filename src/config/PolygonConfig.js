@@ -11,7 +11,7 @@
      tooltip: {
          show: false,	// 是否显示，默认值false
          formatter: '{count}',	// 用来格式化悬浮的Html，支持字符串模板和回调函数两种形式
-         customClass: 'inmap-tooltip-black', //是否自定义样式,用户可以个性化设置class,系统默认black样式。
+         customClass: 'zcmap-tooltip-black', //是否自定义样式,用户可以个性化设置class,系统默认black样式。
          offsets: {
              top: 5,
              left: 12,	//左偏移量 

@@ -78,12 +78,12 @@ export default class CanvasOverlay extends BaseClass {
             map.addEventListener('click', this._tMouseClick);
         }
 
-        if (!map._inmapToolBar) {
-            map._inmapToolBar = new Toolbar(map.getContainer());
+        if (!map._zcmapToolBar) {
+            map._zcmapToolBar = new Toolbar(map.getContainer());
         }
 
-        this.legend = new Legend(map._inmapToolBar.legendContainer);
-        this.toolTip = new ToolTip(map._inmapToolBar.container);
+        this.legend = new Legend(map._zcmapToolBar.legendContainer);
+        this.toolTip = new ToolTip(map._zcmapToolBar.container);
 
         this._canvasInit();
         return this._container;
@@ -292,7 +292,7 @@ export default class CanvasOverlay extends BaseClass {
 
 
         if (this.legend) {
-            this.legend.dispose(this._map._inmapToolBar.legendContainer);
+            this.legend.dispose(this._map._zcmapToolBar.legendContainer);
             this.legend = null;
         }
         if (this.toolTip) {

@@ -28,7 +28,7 @@
     </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="./data/lineString.js"></script>
-    <script src="../dist/inmap.js"></script>
+    <script src="../dist/zcmap.js"></script>
 
 </head>
 
@@ -38,7 +38,7 @@
 
 </html>
 <script>
-    var map = new inMap.Map({
+    var map = new zcmap.Map({
         id: 'allmap',
         skin: 'Blueness',
         center: [105.403119, 38.028658],
@@ -50,7 +50,7 @@
         },
     });
 
-    var overlay1 = new inMap.LineStringOverlay({
+    var overlay1 = new zcmap.LineStringOverlay({
         style: {
             normal: {
                 globalCompositeOperation: 'lighter',
@@ -73,7 +73,7 @@
     });
     map.add(overlay1);
     var data2 = [].concat(data);
-    var overlay2 = new inMap.LineStringAnimationOverlay({
+    var overlay2 = new zcmap.LineStringAnimationOverlay({
         style: {
             globalCompositeOperation: 'lighter',
             //移动点半径

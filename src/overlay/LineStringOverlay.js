@@ -41,7 +41,7 @@ export default class LineStringOverlay extends Parameter {
     }
 
     /**
-     * 设置当前的图层的z-index值。注意：被and添加之后才能调用生效,inmap默认是按照添加图层的顺序设置层级的
+     * 设置当前的图层的z-index值。注意：被and添加之后才能调用生效,zcmap默认是按照添加图层的顺序设置层级的
      * @param {Nubmer} zIndex 图层索引
      */
     setZIndex(zIndex) {

@@ -24,13 +24,13 @@
             font-size: 14px;
         }
 
-        .demo-inmap {
+        .demo-zcmap {
             position: relative;
             width: 100%;
             height: 100%;
         }
 
-        .demo-inmap-legend {
+        .demo-zcmap-legend {
             position: absolute;
             bottom: 30px;
             left: 30px;
@@ -40,14 +40,14 @@
             color: #fff;
         }
 
-        .demo-inmap-legend p {
+        .demo-zcmap-legend p {
             height: 24px;
             line-height: 24px;
             margin: 0;
             font-size: 12px;
         }
 
-        .demo-inmap-legend i {
+        .demo-zcmap-legend i {
             display: inline-block;
             margin-right: 5px;
             width: 10px;
@@ -72,15 +72,15 @@
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="./data/geojson.js"></script>
-    <script src="../dist/inmap.js"></script>
+    <script src="../dist/zcmap.js"></script>
 
 </head>
 
 <body>
-    <div class="demo-inmap">
+    <div class="demo-zcmap">
         <div id="allmap"></div>
         <div class="random-polygon">设置随机围栏</div>
-        <div class="demo-inmap-legend"></div>
+        <div class="demo-zcmap-legend"></div>
     </div>
 </body>
 
@@ -157,19 +157,19 @@
                 </p>
                 `;
         }
-        document.querySelector('.demo-inmap-legend').innerHTML = html;
+        document.querySelector('.demo-zcmap-legend').innerHTML = html;
     };
     createLegendDom();
 
 
     var destroyedData = function () {
         if (overlay) {
-            inmap.remove(overlay);
+            map.remove(overlay);
             overlay = null;
-            // inmap = null;
+            // zcmap = null;
         }
     };
-    var inmap = new inMap.Map({
+    var map = new zcmap.Map({
         id: 'allmap',
         skin: "Blueness",
         center: ["114.16248337214269", "22.559515429553684"],
@@ -184,7 +184,7 @@
         if (overlay) {
             destroyedData();
         }
-        overlay = new inMap.PolygonOverlay({
+        overlay = new zcmap.PolygonOverlay({
             style: {
                 normal: {
                     borderWidth: 1.5,
@@ -227,7 +227,7 @@
                 }
             }
         });
-        inmap.add(overlay);
+        map.add(overlay);
     }
     createOverlay(data.features.length);
 

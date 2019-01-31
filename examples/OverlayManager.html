@@ -36,7 +36,7 @@
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
         crossorigin="anonymous">
-    <script src="../dist/inmap.js"></script>
+    <script src="../dist/zcmap.js"></script>
 </head>
 
 <body>
@@ -52,7 +52,7 @@
 
 </body>
 <script>
-    var inmap = new inMap.Map({
+    var map = new zcmap.Map({
         id: 'allmap',
         skin: "Blueness",
         center: [105.403119, 38.028658],
@@ -67,14 +67,14 @@
     var overlay1 = null;
     var overlay2 = null
 
-    var inMapVue = new Vue({
+    var mapVue = new Vue({
         el: '#app',
         methods: {
             addDot: function () {
                 if (overlay1)
                     this.delDot();
 
-                overlay1 = new inMap.PointOverlay({
+                overlay1 = new zcmap.PointOverlay({
                     tooltip: {
                         show: true,
                         formatter: "{count}",
@@ -147,26 +147,26 @@
                         // }
                     }
                 });
-                inmap.add(overlay1);
+                map.add(overlay1);
             },
             addHeat: function () {
                 if (overlay2)
                     this.delHeat();
 
-                overlay2 = new inMap.HeatOverlay({
+                overlay2 = new zcmap.HeatOverlay({
                     style: {
                         radius: 15, // 半径
 
                     },
                     data: data
                 });
-                inmap.add(overlay2);
+                map.add(overlay2);
             },
             delDot: function () {
-                inmap.remove(overlay1);
+                map.remove(overlay1);
             },
             delHeat: function () {
-                inmap.remove(overlay2);
+                map.remove(overlay2);
             },
             setZIndex: function () {
                 overlay1.setZIndex(-overlay1._zIndex);

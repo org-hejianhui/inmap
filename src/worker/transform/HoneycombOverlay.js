@@ -30,7 +30,7 @@ const HoneycombOverlay = {
             }, map);
 
             if (data[j].count == null) {
-                throw new TypeError('inMap.GriddingOverlay: data is Invalid format ');
+                throw new TypeError('zcmap.GriddingOverlay: data is Invalid format ');
             }
 
         }

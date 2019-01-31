@@ -35,7 +35,7 @@
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
         crossorigin="anonymous">
-    <script src="../dist/inmap.js"></script>
+    <script src="../dist/zcmap.js"></script>
 </head>
 
 <body>
@@ -47,7 +47,7 @@
 
 </body>
 <script>
-    var inMapVue = new Vue({
+    var mapVue = new Vue({
         el: '#app',
         methods: {
             wiriteClick: function () {
@@ -62,7 +62,7 @@
     data.forEach(function (item) {
         item.count = Math.random() * 5
     });
-    var map = new inMap.Map({
+    var map = new zcmap.Map({
         id: 'allmap',
         center: ["114.16248337214269", "22.559515429553684"],
         zoom: {
@@ -188,7 +188,7 @@
             }
         }
     };
-    var overlay = new inMap.PolygonOverlay(skin1);
+    var overlay = new zcmap.PolygonOverlay(skin1);
     map.add(overlay);
     overlay.setData(data);
 </script>

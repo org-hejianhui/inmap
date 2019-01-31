@@ -54,7 +54,7 @@ let callbackFun = function (data) {
         }
 
         if (!callback) {
-            throw new TypeError(`inMap : ${p[index - 1]} worker ${ classPath } is not a function`);
+            throw new TypeError(`zcmap : ${p[index - 1]} worker ${ classPath } is not a function`);
         }
     }
 };

@@ -26,7 +26,7 @@
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="./data/geojson.js"></script>
-    <script src="../dist/inmap.js"></script>
+    <script src="../dist/zcmap.js"></script>
 
 </head>
 
@@ -45,7 +45,7 @@
         'rgba(24, 144, 255, 0.8)',
         'rgba(0, 80, 179, 0.8)',
     ];
-    var inmap = new inMap.Map({
+    var map = new zcmap.Map({
         id: 'allmap',
         skin: "Blueness",
         center: ["114.16248337214269", "22.559515429553684"],
@@ -56,7 +56,7 @@
         }
     });
 
-    var overlay = new inMap.PolygonOverlay({
+    var overlay = new zcmap.PolygonOverlay({
         tooltip: {
             show: true
         },
@@ -142,5 +142,5 @@
             }
         }
     });
-    inmap.add(overlay);
+    map.add(overlay);
 </script>

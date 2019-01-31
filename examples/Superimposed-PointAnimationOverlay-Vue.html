@@ -28,7 +28,7 @@
         }
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
-    <script src="../dist/inmap.js"></script>
+    <script src="../dist/zcmap.js"></script>
     <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
     <link href="https://cdn.bootcss.com/iview/2.12.0/styles/iview.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/iview/2.12.0/iview.min.js"></script>
@@ -202,7 +202,7 @@
         }
 
     }];
-    var inmap = new inMap.Map({
+    var map = new zcmap.Map({
         id: 'allmap',
         skin: "WhiteLover",
         center: [105.403119, 38.028658],
@@ -216,17 +216,17 @@
 
 
     let overlays = [];
-    var inMapVue = new Vue({
+    var mapVue = new Vue({
         el: '#app',
         data: {},
         methods: {
             clear: function () {
                 overlays.forEach(function (item) {
-                    inmap.remove(item);
+                    map.remove(item);
                 });
             },
             addDot: function () {
-                var overlay = new inMap.PointOverlay({
+                var overlay = new zcmap.PointOverlay({
                     tooltip: {
                         show: true,
                         formatter: "{name}"
@@ -248,13 +248,13 @@
                     },
                     data: data1,
                 });
-                inmap.add(overlay);
+                map.add(overlay);
                 overlays.push(overlay);
             },
             addFlashDot: function () {
                 this.clear();
 
-                var overlay = new inMap.PointAnimationOverlay({
+                var overlay = new zcmap.PointAnimationOverlay({
                     style: {
                         fps: 25, //动画帧数
                         color: "#f18080",
@@ -263,12 +263,12 @@
                     },
                     data: data2
                 });
-                inmap.add(overlay);
+                map.add(overlay);
                 overlays.push(overlay);
             },
             addFlashDot2: function () {
                 this.clear();
-                var overlay = new inMap.PointAnimationOverlay({
+                var overlay = new zcmap.PointAnimationOverlay({
                     style: {
                         fps: 25, //动画帧数
                         color: "#f18080",
@@ -277,12 +277,12 @@
                     },
                     data: data3
                 });
-                inmap.add(overlay);
+                map.add(overlay);
                 overlays.push(overlay);
             },
             addImg: function () {
                 var img = "./img/scenic.png";
-                var overlay = new inMap.ImgOverlay({
+                var overlay = new zcmap.ImgOverlay({
                     tooltip: {
                         show: true,
                         formatter: "{name}"
@@ -301,7 +301,7 @@
                     data: data1,
 
                 });
-                inmap.add(overlay);
+                map.add(overlay);
                 overlays.push(overlay);
             }
         },
